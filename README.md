@@ -1,6 +1,6 @@
 # ai-project-template
 
-사람과 AI 에이전트가 같은 폴더에서 일할 때 요청, 자료, 기준, 기록, 결과물을 어디에 두고 어떤 규칙으로 다룰지 정해 둔 작업 폴더 템플릿입니다. 폴더 하나에 일하는 법(`AGENTS.md`)과 다섯 개의 자리가 들어 있어서, 에이전트에게 폴더를 열어 주면 같은 규칙으로 일하고 기록을 남깁니다. 개발자가 아니어도 쓸 수 있습니다. 이 템플릿은 2026 AI 미니컨퍼런스의 세션 '위임한 일을 해내는 코딩·업무 에이전트, 그 일을 챙기는 비서 에이전트'에서 소개합니다. 이 저장소에는 템플릿(현재 v1.4)과 함께, 같은 개념을 설명하는 교재 3편이 들어 있습니다.
+사람과 AI 에이전트가 같은 폴더에서 일할 때 요청, 자료, 기준, 기록, 결과물을 어디에 두고 어떤 규칙으로 다룰지 정해 둔 작업 폴더 템플릿입니다. 폴더 하나에 일하는 법(`AGENTS.md`)과 다섯 개의 자리가 들어 있어서, 에이전트에게 폴더를 열어 주면 같은 규칙으로 일하고 기록을 남깁니다. 개발자가 아니어도 쓸 수 있습니다. 이 템플릿은 2026 AI 미니컨퍼런스의 세션 '위임한 일을 해내는 코딩·업무 에이전트, 그 일을 챙기는 비서 에이전트'에서 소개합니다. 이 저장소에는 템플릿(현재 v1.4)과 함께, 같은 개념을 설명하는 교재 3편과, 내 컴퓨터에서 단계별로 따라 해 보는 실습 가이드가 들어 있습니다.
 
 ## 시작하는 법
 
@@ -14,6 +14,8 @@
 AGENTS.md를 먼저 읽고 시작해줘.
 input/교육요청서.md를 바탕으로 신입 사원 AI 교육 제안서 초안을 만들어서 output/에 저장해줘.
 ```
+
+단계별로 따라 하려면 [실습 가이드](https://simmany.github.io/ai-project-template/practice-guide.html)를 보세요.
 
 일이 끝나면 대화창이 아니라 폴더를 확인합니다. `workflow/`에 요청과 결과 기록이, `output/`에 결과물이, `_workspace/memory/status.md`에 지금 상태가 남습니다.
 
@@ -38,7 +40,8 @@ ai-project-template/
 │   ├── 02-coding-agent-to-work-agent.html
 │   ├── 03-assistant-agent.html
 │   ├── LICENSE.md
-│   └── index.md
+│   ├── index.md
+│   └── practice-guide.html
 └── ai-project-template_v1.4/
     ├── AGENTS.md
     ├── CLAUDE.md
@@ -85,12 +88,12 @@ claude
 
 ### 하네스 같은 팀 구성 도구와 함께 쓸 때
 
-에이전트 팀을 꾸려 달라고 요청할 때 아래 두 가지를 요청에 넣으세요. 도구가 만든 팀이 이 폴더의 규칙을 깨지 않게 하려는 것입니다.
+에이전트 팀을 꾸려 달라고 요청할 때 아래 두 가지를 요청에 넣으세요. 도구가 만든 팀이 이 폴더의 규칙을 깨지 않게 하려는 것입니다. 요청 문장 전체는 [실습 가이드](https://simmany.github.io/ai-project-template/practice-guide.html)의 2단계(2-4 '하네스를 구성한다')에 있습니다.
 
 - 중간 산출물은 `_workspace/drafts/` 아래 요청(REQ)별 폴더에만 두고, `_workspace/` 폴더와 그 안의 `memory/`는 옮기거나 지우지 말라고 적습니다.
 - `CLAUDE.md`의 첫 줄 `@AGENTS.md`는 그대로 두고, 도구의 기록은 그 아래에 추가하라고 적습니다.
 
-## 교재 3편
+## 교재 3편과 실습 가이드
 
 템플릿의 바탕이 되는 개념을 설명하는 교재입니다. 브라우저에서 바로 읽을 수 있습니다. 같은 파일이 저장소의 `docs/`에도 있습니다.
 
@@ -112,6 +115,12 @@ claude
 
 [03-assistant-agent.html](https://simmany.github.io/ai-project-template/03-assistant-agent.html)
 
+### 실습 가이드
+
+교재 3편의 개념을 내 컴퓨터에서 따라 해 보는 가이드입니다. 템플릿 폴더에 자료와 기준을 넣어 업무 에이전트에게 맡기고(1단계), 하네스로 에이전트 팀을 꾸리거나 만들어 둔 팀을 골라 쓰고(2단계, 2B), 비서 에이전트가 진행 상황과 다음 할 일을 챙기게 만듭니다(3단계). 이어서 비서의 권한을 조금씩 여는 법(4), 막혔을 때(5), 요청 문장을 모은 프롬프트 모음(6)이 있습니다. 가이드에 적힌 걸리는 시간은 60분 안팎이고, 단계마다 끊어도 됩니다.
+
+[practice-guide.html](https://simmany.github.io/ai-project-template/practice-guide.html)
+
 ## 버전 기록
 
 - v1.0: 처음 만든 버전. `AGENTS.md`, `CLAUDE.md`와 `rules/`, `workflow/`, `input/`, `_workspace/`, `output/` 폴더로 구성했습니다.
@@ -126,6 +135,7 @@ claude
 ## 알려진 한계
 
 - 동작 확인은 터미널의 Claude Code로 했습니다. 비서 에이전트는 ChatGPT Dots에서 예약을 만들고 한 번 실행해 보는 데까지만 확인했습니다. Claude 데스크톱 앱(Cowork), Codex, ChatGPT Work, Hermes, OpenClaw에서의 동작은 확인하지 않았습니다.
+- 실습 가이드는 1단계를 Claude Code로 실제로 실행해 확인했습니다. 2단계(하네스 플러그인), 2B, 3단계의 Hermes와 OpenClaw, Claude의 예약 작업, 4(조금씩 연다)의 구성은 공식 문서와 대조했을 뿐 끝까지 실행해 보지는 않았습니다.
 - 결과가 비어 있는 다른 요청이 있으면, 상태만 묻는 질문에도 `status.md`의 '다음 할 일'에 한 줄이 적힐 수 있습니다. 의도한 동작입니다.
 - 해당하는 요청이 없는데도 결과가 비어 있는 다른 요청이 없다는 줄이 `status.md`에 적힌 적이 한 번 있었습니다.
 - 비서 에이전트가 적어 둔 요청은 '다음 할 일'에 오르지만, 사람이 그 요청을 지정하기 전에는 수행되지 않습니다. 자동으로 이어서 진행되기를 기대하면 어긋납니다.
@@ -134,5 +144,5 @@ claude
 ## 출처와 라이선스
 
 - 템플릿(`ai-project-template_v1.4/`)은 MIT 라이선스입니다. 전문은 [LICENSE](LICENSE)에 있습니다.
-- 교재(`docs/`의 HTML)는 MIT가 아니라 CC BY 4.0입니다. 적용 안내는 [docs/LICENSE.md](docs/LICENSE.md)에 있습니다.
+- 교재와 실습 가이드(`docs/`의 HTML)는 MIT가 아니라 CC BY 4.0입니다. 적용 안내는 [docs/LICENSE.md](docs/LICENSE.md)에 있습니다.
 - 저작권자: Su-Ho Yoo

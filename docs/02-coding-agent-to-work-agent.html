@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>코딩 에이전트에서 업무 에이전트까지, 같은 그림으로 보기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;700&amp;family=IBM+Plex+Sans+KR:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  /* 레이아웃: 42rem 읽기 단, 도식은 54rem까지 넓힘, 상단에 얇은 구간 이동 줄 */
+  --paper:#F2F4F7; --surface:#FFFFFF; --ink:#141C26; --ink-2:#55606E; --line:#C6CED8;
+  --accent:#1B4FD1; --accent-tint:#E3EBFC; --local:#A8500A; --local-tint:#FAEEDC;
+  --font-display:"Hahmlet","Noto Serif KR","AppleMyungjo","Batang",serif;
+  --font-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F141B; --surface:#19212C; --ink:#E7ECF2; --ink-2:#A0ABB9; --line:#3A4656;
+    --accent:#86A8FF; --accent-tint:#1B2B52; --local:#F2A957; --local-tint:#3B2A12;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F141B; --surface:#19212C; --ink:#E7ECF2; --ink-2:#A0ABB9; --line:#3A4656;
+  --accent:#86A8FF; --accent-tint:#1B2B52; --local:#F2A957; --local-tint:#3B2A12;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word}
+.wrap{width:min(54rem,100% - 2.5rem);margin-inline:auto}
+.prose > p,.prose > ul,.prose > ol,.prose > h3{max-width:42rem}
+
+header.top{padding:3.5rem 0 2rem}
+.kicker{font-size:.875rem;font-weight:600;color:var(--accent);margin:0 0 .75rem}
+h1{font-family:var(--font-display);font-weight:700;font-size:clamp(1.9rem,4.6vw,2.75rem);line-height:1.25;margin:0 0 1.25rem;text-wrap:balance;letter-spacing:-.01em;max-width:42rem}
+.lead{font-size:1.125rem;max-width:42rem;margin:0 0 1.5rem}
+.meta{display:flex;flex-wrap:wrap;gap:.4rem 2rem;margin:0;font-size:.9rem;color:var(--ink-2)}
+.meta div{display:flex;gap:.5rem}
+.meta dt{font-weight:600;color:var(--ink)}
+.meta dd{margin:0}
+
+.rail{position:sticky;top:0;z-index:5;background:var(--paper);border-block:1px solid var(--line)}
+.rail ol{display:flex;gap:.25rem 1.4rem;list-style:none;margin:0;padding:.6rem 0;overflow-x:auto;white-space:nowrap;font-size:.9rem}
+.rail li{margin:0}
+.rail a{color:var(--ink-2);text-decoration:none;display:inline-flex;gap:.4rem;padding:.2rem 0}
+.rail a:hover{color:var(--accent)}
+.rail .n{font-variant-numeric:tabular-nums;color:var(--accent);font-weight:600}
+
+section{padding:3rem 0 1rem;scroll-margin-top:3.25rem}
+.sec-head{display:flex;align-items:baseline;gap:.9rem;margin:0 0 1.25rem}
+.sec-no{font-family:var(--font-display);font-weight:700;font-size:1.625rem;line-height:1.35;color:var(--accent);font-variant-numeric:tabular-nums}
+h2{font-family:var(--font-display);font-weight:700;font-size:1.625rem;line-height:1.35;margin:0;text-wrap:balance}
+h3{font-size:1.1875rem;font-weight:600;line-height:1.45;margin:2.25rem 0 .75rem;text-wrap:balance}
+p{margin:0 0 1.1rem}
+ul,ol{margin:0 0 1.1rem;padding-left:1.3rem}
+li{margin:.3rem 0}
+a{color:var(--accent);text-underline-offset:.18em}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+strong,b{font-weight:600}
+
+.fig{margin:2rem 0 2.25rem}
+.fig-panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1.25rem;overflow-x:auto}
+.fig-panel svg{display:block;width:100%;height:auto;min-width:640px}
+.fig-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.fig-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1rem 1rem 1.1rem;display:flex;flex-direction:column;gap:.75rem}
+.fig-card h4{margin:0;font-size:1rem;font-weight:600;line-height:1.4}
+.fig-card svg{display:block;width:100%;max-width:320px;height:auto;margin-inline:auto}
+.fig-card p,.fig-card ul{margin:0;font-size:.9rem;line-height:1.6;color:var(--ink-2)}
+.fig-card ul{padding-left:1.1rem}
+figcaption{margin-top:.75rem;font-size:.9rem;line-height:1.6;color:var(--ink-2);max-width:42rem}
+figcaption b{color:var(--ink)}
+@media (max-width:760px){.fig-grid{grid-template-columns:1fr}}
+
+svg text{font-family:var(--font-body);fill:var(--ink);font-size:13px}
+svg .t-b{font-weight:600}
+svg .t-s{font-size:12px;fill:var(--ink-2)}
+svg .t-s2{font-size:12px}
+svg .t-xs{font-size:11.5px}
+svg .t-q{font-size:12px}
+svg .t-acc{fill:var(--accent)}
+svg .t-loc{fill:var(--local)}
+svg .box{fill:var(--paper);stroke:var(--ink);stroke-width:1.25}
+svg .box-in{fill:var(--surface);stroke:var(--ink);stroke-width:1}
+svg .box-acc{fill:var(--accent-tint);stroke:var(--accent);stroke-width:1.75}
+svg .box-acc-in{fill:var(--accent-tint);stroke:var(--accent);stroke-width:1.5}
+svg .box-dash{fill:none;stroke:var(--ink-2);stroke-width:1.25;stroke-dasharray:5 4}
+svg .frame-acc{fill:var(--accent-tint);stroke:var(--accent);stroke-width:1.5}
+svg .zone-cloud{fill:var(--accent-tint);stroke:var(--accent);stroke-width:1.25}
+svg .zone-local{fill:var(--local-tint);stroke:var(--local);stroke-width:1.25}
+svg .bar{fill:var(--line)}
+svg .ln{fill:none;stroke:var(--ink);stroke-width:1.25}
+svg .ln-acc{fill:none;stroke:var(--accent);stroke-width:1.75}
+svg .ln-soft{fill:none;stroke:var(--ink-2);stroke-width:1;stroke-dasharray:4 4}
+svg .hd{fill:var(--ink)}
+svg .hd-acc{fill:var(--accent)}
+svg .dot-acc{fill:var(--accent)}
+
+.table-wrap{overflow-x:auto;margin:1.5rem 0 1.75rem}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.95rem;line-height:1.6}
+th,td{text-align:left;vertical-align:top;padding:.65rem 1rem .65rem 0;border-bottom:1px solid var(--line)}
+thead th{font-weight:600;border-bottom:1.5px solid var(--ink);white-space:nowrap}
+tbody th{font-weight:600;white-space:nowrap}
+
+.principle{margin:2rem 0 0;padding:1rem 1.25rem;border-left:4px solid var(--accent);background:var(--accent-tint);border-radius:0 10px 10px 0;max-width:42rem}
+.principle .label{display:block;font-size:.8125rem;font-weight:600;color:var(--accent);margin-bottom:.2rem}
+.principle .say{font-family:var(--font-display);font-weight:700;font-size:1.25rem;line-height:1.5;margin:0}
+.principle .ask{margin:.5rem 0 0;font-size:.95rem;color:var(--ink-2)}
+
+.keyline{margin:1.75rem 0;padding:1.1rem 0;border-block:1.5px solid var(--ink);max-width:42rem;font-family:var(--font-display);font-weight:500;font-size:1.1875rem;line-height:1.65}
+
+.note{margin:1.75rem 0;padding:1rem 1.25rem;border:1px solid var(--line);border-radius:10px;background:var(--surface);max-width:42rem;font-size:.95rem;line-height:1.65}
+.note h4{margin:0 0 .5rem;font-size:.95rem;font-weight:600}
+.note ul{margin:0 0 .6rem}
+.note p{margin:0}
+
+details{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:.85rem 1.1rem;margin:.6rem 0;max-width:42rem}
+summary{cursor:pointer;font-weight:500}
+details[open] summary{margin-bottom:.5rem}
+details p{margin:0;color:var(--ink-2)}
+details p b{color:var(--ink)}
+
+.principles{counter-reset:p;list-style:none;padding:0;max-width:42rem}
+.principles li{counter-increment:p;display:flex;gap:.9rem;align-items:baseline;padding:.7rem 0;border-bottom:1px solid var(--line);margin:0;font-family:var(--font-display);font-weight:500;font-size:1.0625rem;line-height:1.55}
+.principles li::before{content:counter(p);color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums}
+
+footer{margin-top:3rem;padding:2rem 0 3.5rem;border-top:1px solid var(--line);font-size:.9rem;line-height:1.65;color:var(--ink-2)}
+footer h2{font-family:var(--font-body);font-size:1rem;color:var(--ink);margin:0 0 .6rem}
+footer ol{max-width:46rem}
+footer p{max-width:42rem}
+
+@media print{
+  .rail{display:none}
+  body{background:#fff;font-size:11pt}
+  section{padding-top:1.25rem}
+  .fig,details,.principle,.note,tr{break-inside:avoid}
+  .fig-panel svg{min-width:0}
+}
+
+.nb{white-space:nowrap}
+table.wide{min-width:840px}
+table.tl{min-width:640px}
+table.tl td:first-child{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.scenes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin:1.5rem 0 1.75rem}
+.scenes.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.scene{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--ink);border-radius:0 0 12px 12px;padding:1rem 1.15rem 1.1rem;display:flex;flex-direction:column;gap:.45rem}
+.scene.solo{max-width:42rem;margin:1.5rem 0 1.75rem}
+.scene .when{margin:0;font-size:.8125rem;font-weight:600;color:var(--accent)}
+.scene .quote{margin:0;font-family:var(--font-display);font-weight:700;font-size:1.25rem;line-height:1.4;text-wrap:balance}
+.scene .quote.num{font-size:1.5rem;font-variant-numeric:tabular-nums}
+.scene .ko{margin:0;font-weight:500;line-height:1.55}
+.scene .who{margin:0;font-size:.9rem;line-height:1.6;color:var(--ink-2)}
+.claims{counter-reset:c;list-style:none;padding:0;max-width:42rem;margin:0 0 1.5rem}
+.claims li{counter-increment:c;display:flex;gap:.9rem;align-items:baseline;padding:.75rem 0;border-bottom:1px solid var(--line);margin:0;font-size:1.0625rem;line-height:1.6}
+.claims li::before{content:counter(c);font-family:var(--font-display);color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums}
+.terms{max-width:42rem;margin:1.25rem 0 0}
+.terms div{display:grid;grid-template-columns:9.5rem 1fr;gap:.2rem 1rem;padding:.65rem 0;border-bottom:1px solid var(--line)}
+.terms dt{font-weight:600}
+.terms dd{margin:0;color:var(--ink-2)}
+@media (max-width:760px){.scenes,.scenes.two{grid-template-columns:1fr}}
+@media (max-width:560px){.terms div{grid-template-columns:1fr}}
+@media print{.terms div,.scene{break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="kicker">학습자료 2편 · 생성형 AI와 AI 에이전트</p>
+    <h1><span class="nb">코딩 에이전트에서</span> <span class="nb">업무 에이전트까지,</span> <span class="nb">같은 그림으로 보기</span></h1>
+    <p class="lead">2024년에 젠슨 황은 이제 모두가 프로그래머라고 했고, 2025년에 사람들은 바이브 코딩을 봤습니다. 말로 만든다는 이야기였습니다. 같은 시기에 개발 도구 안에서는 더 오래 남을 것이 만들어지고 있었습니다. AI에게 일을 맡기는 방법입니다. 이 편은 모두가 기억하는 장면을 따라가며 업무 위임, 컨텍스트 엔지니어링, 하네스 엔지니어링이 어디에서 나왔는지, 코드를 쓰지 않는 사람에게 왜 필요한지를 봅니다.</p>
+    <dl class="meta">
+      <div><dt>앞 편</dt><dd><a href="01-chatbot-to-agent.html">챗봇에서 에이전트까지</a></dd></div>
+      <div><dt>다음 편</dt><dd><a href="03-assistant-agent.html">비서 에이전트</a></dd></div>
+      <div><dt>제품 정보 기준일</dt><dd>2026년 11월 15일</dd></div>
+    </dl>
+  </div>
+</header>
+
+<nav class="rail" aria-label="구간 이동">
+  <div class="wrap">
+    <ol>
+      <li><a href="#two-stories"><span class="n">1</span>두 이야기</a></li>
+      <li><a href="#steps"><span class="n">2</span>계단</a></li>
+      <li><a href="#why-code"><span class="n">3</span>왜 코딩이 먼저</a></li>
+      <li><a href="#one-two"><span class="n">4</span>원투펀치</a></li>
+      <li><a href="#vibe"><span class="n">5</span>바이브 너머</a></li>
+      <li><a href="#three-skills"><span class="n">6</span>세 가지 기술</a></li>
+      <li><a href="#work-agent"><span class="n">7</span>업무 에이전트</a></li>
+      <li><a href="#inherit"><span class="n">8</span>물려준 것</a></li>
+      <li><a href="#check">정리</a></li>
+      <li><a href="#timeline">연표</a></li>
+      <li><a href="#terms">용어</a></li>
+    </ol>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="claims" class="prose" aria-labelledby="h-claims">
+  <h3 id="h-claims" style="margin-top:0">이 편의 주장 세 가지</h3>
+  <ol class="claims">
+    <li>사람들이 본 것은 바이브 코딩입니다. 일어난 것은 일을 맡기는 방법이 만들어진 일입니다.</li>
+    <li>2025년 말의 변곡점은 모델 혼자 만들지 않았습니다. 더 강한 모델과, 먼저 계획하게 만드는 하네스가 함께 만들었습니다.</li>
+    <li>그 방법이 코드 밖으로 나온 것이 업무 에이전트입니다. 3편의 비서 에이전트는 그 위에 서 있습니다.</li>
+  </ol>
+  <div class="note">
+    <h4>앞뒤 편과 이어지는 곳</h4>
+    <ul>
+      <li><strong>1편에서 가져옵니다.</strong> 맡기는 방식 셋(제안받기, 함께 작업하기, 목표를 위임하기), ‘에이전트는 모델에 하네스를 더한 것’이라는 식, 세 칸의 ‘고르기’.</li>
+      <li><strong>3편으로 넘깁니다.</strong> 비서 에이전트의 승인, 작업노트, AGENTS.md. 그 뿌리가 이 편에 있습니다.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="two-stories" class="prose" aria-labelledby="h-two">
+  <div class="sec-head"><span class="sec-no">1</span><h2 id="h-two">보인 것과 일어난 것</h2></div>
+
+  <div class="scenes">
+    <div class="scene">
+      <p class="when">2024년 2월 12일 · 두바이</p>
+      <p class="quote" lang="en">“Everybody in the world is now a programmer.”</p>
+      <p class="ko">이제 세상 모든 사람이 프로그래머다.</p>
+      <p class="who">젠슨 황, 세계정부정상회의. 아이들에게 코딩을 가르치라던 오랜 조언을 뒤집은 말로 보도됐습니다. (<a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/jensen-huang-advises-against-learning-to-code-leave-it-up-to-ai">Tom’s Hardware</a>)</p>
+    </div>
+    <div class="scene">
+      <p class="when">2025년 2월 2일 · X</p>
+      <p class="quote" lang="en">“forget that the code even exists”</p>
+      <p class="ko">코드가 있다는 사실조차 잊는다.</p>
+      <p class="who">안드레이 카파시가 ‘바이브 코딩’이라는 말을 만든 글. 그해 11월 콜린스 사전이 올해의 단어로 골랐습니다. (<a href="https://www.hotpress.com/culture/collins-dictionary-announces-vibe-coding-as-word-of-the-year-23116566">Hot Press</a>)</p>
+    </div>
+    <div class="scene">
+      <p class="when">2025년 3월 10일 · 미국외교협회</p>
+      <p class="quote" lang="en">“AI is writing 90% of the code”</p>
+      <p class="ko">석 달에서 여섯 달 뒤면 AI가 코드의 90%를 쓴다.</p>
+      <p class="who">Anthropic CEO 다리오 아모데이. 닷새 전에는 Y Combinator 대표가 겨울 기수 넷 중 하나는 코드의 95%를 AI가 썼다고 밝혔습니다. (<a href="https://www.businessinsider.nl/anthropics-ceo-says-that-in-3-to-6-months-ai-will-be-writing-90-of-the-code-software-developers-were-in-charge-of/">Business Insider</a>)</p>
+    </div>
+  </div>
+
+  <p>세 장면이 같은 이야기를 합니다. 말로 만든다, AI가 코드를 쓴다. 사람들이 본 것은 여기까지입니다.</p>
+  <p>같은 시기에 개발 도구 안에서는 다른 일이 일어나고 있었습니다.</p>
+  <ul>
+    <li><strong>2025년 2월.</strong> 터미널에서 과제를 통째로 넘기는 Claude Code가 연구 프리뷰로 나왔습니다. 바이브 코딩이라는 말이 나오고 3주 뒤입니다.</li>
+    <li><strong>2025년 6월.</strong> 요청문을 다듬는 일보다 모델이 읽을 것 전체를 설계하는 일이 중요하다는 뜻에서 ‘컨텍스트 엔지니어링’이라는 이름이 퍼졌습니다.</li>
+    <li><strong>2026년 1월.</strong> Claude Code의 구조를 개발자가 아닌 사람의 업무로 옮긴 Cowork가 나왔습니다.</li>
+    <li><strong>2026년 2월.</strong> 모델 바깥의 일하는 환경을 설계하는 ‘하네스 엔지니어링’이 이름을 얻었습니다. 같은 달에 카파시는 바이브 코딩이라는 말을 접고 ‘에이전틱 엔지니어링’을 내놓았습니다.</li>
+  </ul>
+
+  <figure class="fig">
+    <div class="fig-panel"><svg viewBox="0 0 760 280" role="img" aria-label="눈에 보인 이야기는 2024년 2월 모두가 프로그래머라는 말, 2025년 2월 바이브 코딩, 2025년 11월 올해의 단어였다. 그 아래에서는 챗봇에서 코딩 에이전트, 업무 에이전트, 비서 에이전트로 넘어가는 변화가 일어났고, 코딩 에이전트와 업무 에이전트 시기에 업무 위임, 컨텍스트 엔지니어링, 하네스 엔지니어링이 이름을 얻었다." xmlns="http://www.w3.org/2000/svg"><text x="16" y="40" text-anchor="start" class="t-b">눈에 보인</text><text x="16" y="58" text-anchor="start" class="t-b">이야기</text><rect x="150" y="20" width="180" height="48" rx="8" class="box-dash"/><text x="240" y="41" text-anchor="middle" class="t-b t-s2">“모두가 프로그래머”</text><text x="240" y="58" text-anchor="middle" class="t-s">2024년 2월</text><rect x="352" y="20" width="180" height="48" rx="8" class="box-dash"/><text x="442" y="41" text-anchor="middle" class="t-b t-s2">바이브 코딩</text><text x="442" y="58" text-anchor="middle" class="t-s">2025년 2월</text><rect x="554" y="20" width="180" height="48" rx="8" class="box-dash"/><text x="644" y="41" text-anchor="middle" class="t-b t-s2">올해의 단어</text><text x="644" y="58" text-anchor="middle" class="t-s">2025년 11월</text><polyline points="330,44 352,44" class="ln-soft"/><polyline points="532,44 554,44" class="ln-soft"/><polyline points="16,90 744,90" class="ln-soft"/><text x="16" y="132" text-anchor="start" class="t-b t-acc">그 아래에서</text><text x="16" y="150" text-anchor="start" class="t-b t-acc">일어난 일</text><rect x="150" y="108" width="130" height="60" rx="8" class="box"/><text x="215" y="133" text-anchor="middle" class="t-b">챗봇</text><text x="215" y="152" text-anchor="middle" class="t-s">묻고 답한다 · 1편</text><rect x="302" y="108" width="130" height="60" rx="8" class="box-acc"/><text x="367" y="133" text-anchor="middle" class="t-b">코딩 에이전트</text><text x="367" y="152" text-anchor="middle" class="t-s">코드를 맡긴다</text><polyline points="280,138 294,138" class="ln"/><polygon points="302,138 293,133 293,143" class="hd"/><rect x="454" y="108" width="130" height="60" rx="8" class="box-acc"/><text x="519" y="133" text-anchor="middle" class="t-b">업무 에이전트</text><text x="519" y="152" text-anchor="middle" class="t-s">업무를 맡긴다</text><polyline points="432,138 446,138" class="ln"/><polygon points="454,138 445,133 445,143" class="hd"/><rect x="606" y="108" width="130" height="60" rx="8" class="box"/><text x="671" y="133" text-anchor="middle" class="t-b">비서 에이전트</text><text x="671" y="152" text-anchor="middle" class="t-s">먼저 움직인다 · 3편</text><polyline points="584,138 598,138" class="ln"/><polygon points="606,138 597,133 597,143" class="hd"/><polyline points="302,178 302,186 584,186 584,178" class="ln-acc"/><polyline points="443,186 443,204" class="ln-acc"/><rect x="189" y="204" width="130" height="34" rx="6" class="box-acc-in"/><text x="254.0" y="226" text-anchor="middle" class="t-b t-s2">업무 위임</text><rect x="333" y="204" width="180" height="34" rx="6" class="box-acc-in"/><text x="423.0" y="226" text-anchor="middle" class="t-b t-s2">컨텍스트 엔지니어링</text><rect x="527" y="204" width="170" height="34" rx="6" class="box-acc-in"/><text x="612.0" y="226" text-anchor="middle" class="t-b t-s2">하네스 엔지니어링</text><text x="443" y="264" text-anchor="middle" class="t-s">이 시기에 이름을 얻은 세 가지 기술</text></svg></div>
+    <figcaption><b>도식 1.</b> 바이브 코딩은 물 위로 보인 부분입니다. 그 아래에서는 챗봇에서 코딩 에이전트로, 다시 업무 에이전트로 넘어가는 길이 닦였고, 그 길 위에서 일을 맡기는 세 가지 기술이 이름을 얻었습니다.</figcaption>
+  </figure>
+
+  <p>이 편은 아래쪽 이야기를 따라갑니다. 코딩 에이전트의 역사는 개발자만의 이야기가 아닙니다. 지금 문서와 표를 다루는 업무 에이전트, 3편에서 볼 비서 에이전트가 쓰는 문법이 여기에서 만들어졌습니다.</p>
+  <p class="keyline">바이브 코딩은 보인 것입니다. 일어난 것은 일을 맡기는 방법이 만들어진 일입니다.</p>
+</section>
+
+<section id="steps" class="prose" aria-labelledby="h-steps">
+  <div class="sec-head"><span class="sec-no">2</span><h2 id="h-steps">맡기는 단위가 커졌다</h2></div>
+
+  <div class="scenes">
+    <div class="scene">
+      <p class="when">2021년 6월 29일</p>
+      <p class="quote" lang="en">“your AI pair programmer”</p>
+      <p class="ko">당신의 AI 짝 프로그래머.</p>
+      <p class="who">GitHub Copilot 기술 프리뷰. 쓰고 있는 코드의 다음 줄이나 함수 하나를 제안했습니다. (<a href="https://github.blog/news-insights/product-news/introducing-github-copilot-ai-pair-programmer/">GitHub</a>)</p>
+    </div>
+    <div class="scene">
+      <p class="when">2024년 3월 12일</p>
+      <p class="quote" lang="en">“the first AI software engineer”</p>
+      <p class="ko">최초의 AI 소프트웨어 엔지니어.</p>
+      <p class="who">Cognition의 Devin 시연 영상. 일을 혼자 끝내는 AI 개발자라는 상상이 먼저 도착했습니다. 그날 밝힌 실제 깃허브 이슈 해결률은 13.86%였습니다. (<a href="https://cognition.ai/blog/introducing-devin">Cognition</a>)</p>
+    </div>
+    <div class="scene">
+      <p class="when">2025년 2월 24일 → 11월</p>
+      <p class="quote num">연구 프리뷰 → 10억 달러</p>
+      <p class="ko">상상이 제품이 되는 데 걸린 시간.</p>
+      <p class="who">Claude Code는 새 모델 발표문에 함께 실린 연구 프리뷰였습니다(<a href="https://www.anthropic.com/news/claude-3-7-sonnet">Anthropic</a>). 정식 출시 여섯 달 만에 연환산 매출 10억 달러에 닿았습니다(<a href="https://www.anthropic.com/news/anthropic-acquires-bun-as-claude-code-reaches-usd1b-milestone">Anthropic</a>).</p>
+    </div>
+  </div>
+
+  <p>코딩 AI의 5년을 모델이 똑똑해진 이야기로만 읽으면 절반을 놓칩니다. 사람이 AI에게 넘기는 단위가 커진 이야기로 읽어야 나머지 절반이 보입니다.</p>
+
+  <figure class="fig">
+    <div class="fig-panel"><svg viewBox="0 0 760 338" role="img" aria-label="맡기는 단위의 계단. 2021년 Copilot은 다음 줄을 제안했고, 2023년 Cursor는 파일과 기능을 함께 작업했고, 2025년 Claude Code와 Codex는 과제를 위임받았고, 2026년 Cowork와 ChatGPT Work는 코드 밖 업무를 위임받는다. 다음 계단인 비서 에이전트는 시간까지 맡는다." xmlns="http://www.w3.org/2000/svg"><text x="16" y="28" text-anchor="start" class="t-b t-s">사람이 넘겨주는 범위가 커진다</text><polyline points="196,24 242,24" class="ln"/><polygon points="250,24 241,19 241,29" class="hd"/><rect x="16" y="198" width="136" height="64" rx="8" class="box"/><text x="84" y="226" text-anchor="middle" class="t-b">다음 줄</text><text x="84" y="246" text-anchor="middle" class="t-s">제안받기</text><text x="84" y="284" text-anchor="middle" class="t-b t-s2">Copilot</text><text x="84" y="302" text-anchor="middle" class="t-s">2021년~</text><rect x="164" y="158" width="136" height="104" rx="8" class="box"/><text x="232" y="186" text-anchor="middle" class="t-b">파일 · 기능</text><text x="232" y="206" text-anchor="middle" class="t-s">함께 작업하기</text><text x="232" y="284" text-anchor="middle" class="t-b t-s2">Cursor</text><text x="232" y="302" text-anchor="middle" class="t-s">2023년~</text><rect x="312" y="118" width="136" height="144" rx="8" class="box-acc"/><text x="380" y="146" text-anchor="middle" class="t-b t-acc">과제</text><text x="380" y="166" text-anchor="middle" class="t-s">목표를 위임하기</text><text x="380" y="284" text-anchor="middle" class="t-b t-s2">Claude Code</text><text x="380" y="301" text-anchor="middle" class="t-b t-s2">Codex</text><text x="380" y="319" text-anchor="middle" class="t-s">2025년~</text><rect x="460" y="78" width="136" height="184" rx="8" class="box-acc"/><text x="528" y="106" text-anchor="middle" class="t-b t-acc">업무</text><text x="528" y="126" text-anchor="middle" class="t-s">코드 밖으로 위임</text><text x="528" y="284" text-anchor="middle" class="t-b t-s2">Cowork</text><text x="528" y="301" text-anchor="middle" class="t-b t-s2">ChatGPT Work</text><text x="528" y="319" text-anchor="middle" class="t-s">2026년~</text><rect x="608" y="38" width="136" height="224" rx="8" class="box-dash"/><text x="676" y="66" text-anchor="middle" class="t-b">시간</text><text x="676" y="86" text-anchor="middle" class="t-s">먼저 움직인다</text><text x="676" y="284" text-anchor="middle" class="t-b t-s2">비서 에이전트</text><text x="676" y="302" text-anchor="middle" class="t-s">3편</text></svg></div>
+    <figcaption><b>도식 2.</b> 계단이 올라갈 때마다 달라진 것은 AI가 쓰는 코드의 양보다 사람이 넘겨주는 범위입니다. 파란 두 계단이 이번 편, 점선 계단이 3편입니다.</figcaption>
+  </figure>
+
+  <div class="table-wrap">
+    <table class="wide">
+      <thead><tr><th>시기</th><th>대표 제품</th><th>만나는 자리</th><th>맡기는 단위</th><th>사람이 하는 일</th><th>1편의 말로</th></tr></thead>
+      <tbody>
+        <tr><th>2021년~</th><td>GitHub Copilot</td><td>편집기 안</td><td>다음 줄, 함수 하나</td><td>직접 쓰면서 제안을 고른다</td><td>제안받기</td></tr>
+        <tr><th>2023년~</th><td>Cursor</td><td>AI 중심 편집기</td><td>파일 여러 개, 기능 하나</td><td>단계를 정하고 변경을 검토한다</td><td>함께 작업하기</td></tr>
+        <tr><th>2025년~</th><td>Claude Code, Codex</td><td>터미널, 클라우드</td><td>과제 하나</td><td>목표, 제약, 완료 기준을 주고 결과를 검증한다</td><td>목표를 위임하기</td></tr>
+        <tr><th>2026년~</th><td>Cowork, ChatGPT Work</td><td>데스크톱 앱</td><td>업무 하나</td><td>폴더와 권한을 정하고 계획을 승인한다</td><td>목표를 위임하기<br>(코드 밖)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Cursor는 2023년 4월 AI와 짝을 이뤄 프로그래밍하도록 만든 편집기를 표방했고(<a href="https://cursor.com/changelog/0-2-0">Cursor</a>), 2024년 11월에는 스스로 맥락을 고르고 터미널을 쓰는 초기 에이전트를 넣었습니다(<a href="https://cursor.com/changelog/0-43-x">Cursor</a>). Claude Code는 한 걸음 더 갔습니다. 코드를 찾아 읽고, 파일을 고치고, 테스트를 돌리고, 커밋까지 하는 과제를 터미널에서 통째로 넘기게 했습니다. 같은 해 4월과 5월에는 OpenAI가 터미널용 Codex와, 과제마다 따로 클라우드 환경을 띄우는 Codex를 내놓았습니다(<a href="https://en.wikipedia.org/wiki/OpenAI_Codex_(AI_agent)">위키백과</a>).</p>
+  <p>1편 4장의 세 가지 방식을 다시 보세요. 제안받기, 함께 작업하기, 목표를 위임하기. 그 표는 이 계단의 요약이었습니다.</p>
+
+  <div class="principle"><span class="label">가져갈 문장</span><p class="say">똑똑해진 것만이 아니다. 맡기는 단위가 커졌다.</p></div>
+</section>
+
+<section id="why-code" class="prose" aria-labelledby="h-why">
+  <div class="sec-head"><span class="sec-no">3</span><h2 id="h-why">왜 코딩이 먼저였나</h2></div>
+
+  <div class="scene solo">
+    <p class="when">SWE-bench · 실제 깃허브 이슈를 고치게 하는 시험</p>
+    <p class="quote num">1.96% → 13.86% → 80.9%</p>
+    <p class="ko">20개월 사이에 일어난 일입니다.</p>
+    <p class="who">2024년 3월 이전의 최고 기록, 같은 달 Devin(<a href="https://cognition.ai/blog/introducing-devin">Cognition</a>), 2025년 11월 Opus 4.5의 기록입니다(<a href="https://www.anthropic.com/news/claude-opus-4-5">Anthropic</a>). 시험의 판과 조건이 서로 달라 그대로 견줄 수는 없습니다. 방향만 봅니다.</p>
+  </div>
+
+  <p>이런 숫자가 나올 수 있었던 것은 코딩에 채점할 수 있는 시험지가 있었기 때문입니다. 일을 맡기는 방법이 하필 개발 도구에서 먼저 만들어진 이유가 여기에 있습니다. 코딩에는 맡기기 좋은 조건 네 가지가 처음부터 갖춰져 있었습니다.</p>
+
+  <figure class="fig">
+    <div class="fig-panel"><svg viewBox="0 0 760 244" role="img" aria-label="코딩이 먼저 에이전트에게 맡겨진 네 가지 조건과 내 업무에 던질 질문. 재료가 글이다: 문서와 표가 파일로 있는가. 바로 판정된다: 맞았는지 볼 기준이 있는가. 되돌릴 수 있다: 이전 판으로 돌아갈 수 있는가. 작업대가 열려 있다: 쓸 도구와 폴더가 열려 있는가." xmlns="http://www.w3.org/2000/svg"><text x="16" y="70" text-anchor="start" class="t-b t-s">코딩에는</text><text x="16" y="88" text-anchor="start" class="t-b t-s">있었다</text><text x="16" y="184" text-anchor="start" class="t-b t-s t-acc">내 업무에는</text><text x="16" y="202" text-anchor="start" class="t-b t-s t-acc">있는가</text><rect x="120" y="40" width="148" height="72" rx="8" class="box"/><text x="194" y="70" text-anchor="middle" class="t-b">재료가 글이다</text><text x="194" y="92" text-anchor="middle" class="t-s">코드는 파일에 든 글</text><polyline points="194,112 194,146" class="ln"/><polygon points="194,154 189,145 199,145" class="hd"/><rect x="120" y="154" width="148" height="72" rx="8" class="box-acc-in"/><text x="194" y="186" text-anchor="middle" class="t-s2">문서와 표가</text><text x="194" y="205" text-anchor="middle" class="t-s2">파일로 있는가</text><rect x="276" y="40" width="148" height="72" rx="8" class="box"/><text x="350" y="70" text-anchor="middle" class="t-b">바로 판정된다</text><text x="350" y="92" text-anchor="middle" class="t-s">테스트 · 컴파일러</text><polyline points="350,112 350,146" class="ln"/><polygon points="350,154 345,145 355,145" class="hd"/><rect x="276" y="154" width="148" height="72" rx="8" class="box-acc-in"/><text x="350" y="186" text-anchor="middle" class="t-s2">맞았는지 볼</text><text x="350" y="205" text-anchor="middle" class="t-s2">기준이 있는가</text><rect x="432" y="40" width="148" height="72" rx="8" class="box"/><text x="506" y="70" text-anchor="middle" class="t-b">되돌릴 수 있다</text><text x="506" y="92" text-anchor="middle" class="t-s">Git이 변경을 기록</text><polyline points="506,112 506,146" class="ln"/><polygon points="506,154 501,145 511,145" class="hd"/><rect x="432" y="154" width="148" height="72" rx="8" class="box-acc-in"/><text x="506" y="186" text-anchor="middle" class="t-s2">이전 판으로</text><text x="506" y="205" text-anchor="middle" class="t-s2">돌아갈 수 있는가</text><rect x="588" y="40" width="148" height="72" rx="8" class="box"/><text x="662" y="70" text-anchor="middle" class="t-b">작업대가 열려 있다</text><text x="662" y="92" text-anchor="middle" class="t-s">터미널로 도구를 쓴다</text><polyline points="662,112 662,146" class="ln"/><polygon points="662,154 657,145 667,145" class="hd"/><rect x="588" y="154" width="148" height="72" rx="8" class="box-acc-in"/><text x="662" y="186" text-anchor="middle" class="t-s2">쓸 도구와 폴더가</text><text x="662" y="205" text-anchor="middle" class="t-s2">열려 있는가</text></svg></div>
+    <figcaption><b>도식 3.</b> 위 줄은 코딩에 처음부터 있던 조건, 아래 줄은 같은 조건을 내 업무에 묻는 질문입니다.</figcaption>
+  </figure>
+
+  <ul>
+    <li><strong>재료가 글입니다.</strong> 코드는 파일에 든 글이어서 모델이 그대로 읽고 씁니다.</li>
+    <li><strong>바로 판정됩니다.</strong> 테스트와 컴파일러가 틀린 결과를 그 자리에서 돌려보냅니다. 랠프 루프를 소개한 제프리 헌틀리는 이런 장치를 틀린 결과물을 밀어내는 압력이라고 불렀습니다(<a href="https://ghuntley.com/ralph/">Huntley</a>).</li>
+    <li><strong>되돌릴 수 있습니다.</strong> Git이 모든 변경을 기록합니다. 잘못되면 이전 상태로 돌아갑니다.</li>
+    <li><strong>작업대가 열려 있습니다.</strong> 터미널 하나로 파일, 테스트, 저장소, 배포 도구를 모두 부릅니다.</li>
+  </ul>
+  <p>업무 에이전트는 이 네 가지를 문서와 표의 세계에 다시 만드는 일이었습니다. 그래서 같은 질문을 내 업무에 던질 수 있습니다. 지점별 매출 엑셀을 합쳐 보고서를 만드는 일은 재료가 파일이고 합계로 판정할 수 있어서 오늘 맡길 수 있습니다. 오래된 고객에게 가격 인상을 어떻게 알릴지는 재료가 내 머릿속에 있고 맞았는지 볼 기준이 없어서, 그것부터 글로 꺼내 놓아야 합니다.</p>
+
+  <div class="principle"><span class="label">가져갈 문장</span><p class="say">맡길 수 있는 일은 확인할 수 있는 일이다.</p></div>
+</section>
+
+<section id="one-two" class="prose" aria-labelledby="h-onetwo">
+  <div class="sec-head"><span class="sec-no">4</span><h2 id="h-onetwo">2025년 11월 24일, 원투펀치</h2></div>
+  <p>코딩 에이전트를 써 본 사람들은 2025년 말을 기억합니다. 그 전까지는 쓸 만했고, 그 뒤로는 맡길 만해졌습니다. 흔히 그 변화를 Opus 4.5라는 모델 하나로 설명합니다. 그날의 발표문을 다시 읽으면 네 가지가 함께 바뀌었습니다(<a href="https://www.anthropic.com/news/claude-opus-4-5">Anthropic</a>).</p>
+  <ul>
+    <li><strong>모델.</strong> 실제 소프트웨어 과제 시험에서 가장 높은 기록을 냈습니다.</li>
+    <li><strong>가격.</strong> 100만 토큰에 5달러와 25달러. 이전 Opus의 3분의 1입니다.</li>
+    <li><strong>계획 모드.</strong> 먼저 사용자에게 되묻고, 사용자가 고칠 수 있는 계획 파일을 만든 뒤에 실행하도록 바뀌었습니다.</li>
+    <li><strong>병렬 세션.</strong> 데스크톱 앱에서 여러 작업을 동시에 돌리게 됐고, Opus에만 걸려 있던 사용 한도가 없어졌습니다.</li>
+  </ul>
+
+  <figure class="fig">
+    <div class="fig-panel"><svg viewBox="0 0 760 248" role="img" aria-label="2025년 11월 24일의 원투펀치. 엔진인 모델 Opus 4.5가 더 잘 판단하게 됐고, 조향장치와 브레이크인 하네스의 계획 모드가 먼저 묻고 계획을 세운 뒤 승인받아 실행하게 했다. 둘이 곱해져 맡길 만하다는 사용자의 체감이 생겼다. 같은 날 가격은 3분의 1이 됐고, 여러 세션을 동시에 돌릴 수 있게 됐고, Opus 전용 사용 한도가 없어졌다." xmlns="http://www.w3.org/2000/svg"><rect x="16" y="36" width="240" height="124" rx="8" class="box"/><text x="136" y="62" text-anchor="middle" class="t-s">엔진</text><text x="136" y="88" text-anchor="middle" class="t-b">모델 · Opus 4.5</text><text x="136" y="114" text-anchor="middle" class="t-s">더 잘 판단한다</text><text x="136" y="136" text-anchor="middle" class="t-s">실제 이슈 해결 80.9%</text><text x="280" y="107" text-anchor="middle" class="t-b" style="font-size:24px">×</text><rect x="304" y="36" width="240" height="124" rx="8" class="box-acc"/><text x="424" y="62" text-anchor="middle" class="t-s t-acc">조향 · 브레이크</text><text x="424" y="88" text-anchor="middle" class="t-b t-acc">하네스 · 계획 모드</text><text x="424" y="114" text-anchor="middle" class="t-s">먼저 묻고 계획을 세운다</text><text x="424" y="136" text-anchor="middle" class="t-s">승인한 뒤에 실행한다</text><polyline points="544,98 584,98" class="ln"/><polygon points="592,98 583,93 583,103" class="hd"/><rect x="592" y="36" width="152" height="124" rx="8" class="box-dash"/><text x="668" y="92" text-anchor="middle" class="t-b">맡길 만하다</text><text x="668" y="114" text-anchor="middle" class="t-s">사용자의 체감</text><text x="16" y="190" text-anchor="start" class="t-b t-s">같은 날 함께 바뀐 것</text><rect x="16" y="202" width="236" height="30" rx="6" class="box-in"/><text x="134" y="222" text-anchor="middle" class="t-s2">가격은 3분의 1로</text><rect x="262" y="202" width="236" height="30" rx="6" class="box-in"/><text x="380" y="222" text-anchor="middle" class="t-s2">여러 세션을 동시에</text><rect x="508" y="202" width="236" height="30" rx="6" class="box-in"/><text x="626" y="222" text-anchor="middle" class="t-s2">Opus 전용 한도 폐지</text></svg></div>
+    <figcaption><b>도식 4.</b> 모델은 엔진이고 계획 모드는 조향장치와 브레이크입니다. 더 강한 엔진이, 먼저 계획하게 만드는 조향장치를 만났습니다.</figcaption>
+  </figure>
+
+  <p>계획 모드는 Opus 4.5의 일부가 아닙니다. 그 전부터 있던 하네스 기능이고, Cursor도 두 달 앞서 같은 기능을 냈습니다(<a href="https://cursor.com/changelog/1-7">Cursor</a>). 모델이 판단을 더 잘하게 된 것과, 판단하기 전에 묻고 계획하게 만든 것은 다른 일입니다. 사용자가 느낀 변화는 둘을 더한 값보다 곱한 값에 가까웠습니다. 좋은 모델은 더 좋은 계획을 세우고, 좋은 계획 절차는 좋은 모델이 엉뚱한 데에 힘을 쓰지 않게 합니다.</p>
+
+  <div class="scene solo">
+    <p class="when">2025년 12월 26일 · X</p>
+    <p class="quote" lang="en">“I’ve never felt this much behind as a programmer.”</p>
+    <p class="ko">프로그래머로서 이렇게 뒤처졌다고 느낀 적이 없다.</p>
+    <p class="who">한 달 뒤, 바이브 코딩이라는 말을 만든 카파시가 쓴 글입니다(<a href="https://www.aol.com/news/guy-coined-vibe-coding-now-172146964.html">AOL</a>). 그는 나중에 2025년 12월을 에이전트가 실제로 일하기 시작한 때로 꼽았습니다(<a href="https://tech.yahoo.com/ai/chatgpt/articles/ai-agents-wrote-80-karpathys-175030864.html">Yahoo Tech</a>).</p>
+  </div>
+
+  <p>이 하루가 모든 것을 만든 것은 아닙니다. Claude Code의 성장은 그 전부터 쌓여 있었고, 압축, 지침 파일, 계획 모드 같은 하네스도 이미 갖춰져 있었습니다. 다 갖춰진 하네스에 더 강하고 더 싼 엔진이 들어간 날이라고 보는 편이 정확합니다.</p>
+
+  <div class="principle"><span class="label">가져갈 문장</span><p class="say">모델은 엔진, 하네스는 조향장치다. 체감은 둘의 곱이다.</p></div>
+</section>
+
+<section id="vibe" class="prose" aria-labelledby="h-vibe">
+  <div class="sec-head"><span class="sec-no">5</span><h2 id="h-vibe">바이브 코딩에서 에이전틱 엔지니어링으로</h2></div>
+
+  <div class="scene solo">
+    <p class="when">2026년 2월 초 · X</p>
+    <p class="quote" lang="en">“Vibe coding is passé.”</p>
+    <p class="ko">바이브 코딩은 지나갔다.</p>
+    <p class="who">그 말을 만든 사람이 1년 만에 그 말을 접었다는 소식에 붙은 기사 제목입니다. 카파시가 대신 내놓은 이름이 에이전틱 엔지니어링입니다. (<a href="https://thenewstack.io/vibe-coding-is-passe/">The New Stack</a>)</p>
+  </div>
+
+  <p>바이브 코딩은 문턱을 낮췄습니다. 코드를 몰라도 무언가를 만들 수 있다는 것을 모두에게 보여 줬습니다. 다만 그 말을 만든 사람은 쓰임새를 좁게 잡고 있었습니다. 카파시는 1년 전을 돌아보며, 그때는 모델이 약해서 재미로 하는 일회성 프로젝트, 데모, 실험에나 맞는 방식이었다고 했습니다. 그 뒤 모델이 크게 좋아져 에이전트로 프로그래밍하는 것이 전문가의 기본 작업 방식이 되어 가고 있으니 다른 이름이 필요하다고 했습니다.</p>
+  <p>‘에이전틱’은 코드를 직접 쓰지 않고 코드를 쓰는 에이전트를 지휘하고 감독한다는 뜻이고, ‘엔지니어링’은 거기에 기예와 과학과 전문성이 든다는 뜻입니다. 목표는 소프트웨어 품질을 타협하지 않으면서 에이전트의 생산성을 얻는 것입니다.</p>
+
+  <figure class="fig">
+    <div class="fig-panel"><svg viewBox="0 0 760 282" role="img" aria-label="바이브 코딩은 느낌대로 말하고, AI가 만든 코드를 보지 않고, 돌아가면 받아들이며, 안 되면 오류를 붙여 넣고 다시 시킨다. 에이전틱 엔지니어링은 목표와 제약과 완료 기준을 설계해서 맡기고, 에이전트가 계획하고 실행하고 검증하며, 사람이 계획을 승인하고 결과를 검수하고, 실수가 나오면 일하는 환경을 고친다." xmlns="http://www.w3.org/2000/svg"><text x="16" y="64" text-anchor="start" class="t-b">바이브</text><text x="16" y="82" text-anchor="start" class="t-b">코딩</text><text x="16" y="194" text-anchor="start" class="t-b t-acc">에이전틱</text><text x="16" y="212" text-anchor="start" class="t-b t-acc">엔지니어링</text><rect x="130" y="36" width="180" height="64" rx="8" class="box"/><text x="220.0" y="64" text-anchor="middle" class="t-b">느낌대로 말한다</text><text x="220.0" y="84" text-anchor="middle" class="t-s">한 줄 요청</text><rect x="350" y="36" width="160" height="64" rx="8" class="box"/><text x="430.0" y="64" text-anchor="middle" class="t-b">AI가 만든다</text><text x="430.0" y="84" text-anchor="middle" class="t-s">코드는 보지 않는다</text><rect x="550" y="36" width="194" height="64" rx="8" class="box"/><text x="647.0" y="64" text-anchor="middle" class="t-b">돌아가면 받는다</text><text x="647.0" y="84" text-anchor="middle" class="t-s">겉으로만 확인한다</text><polyline points="310,68 342,68" class="ln"/><polygon points="350,68 341,63 341,73" class="hd"/><polyline points="510,68 542,68" class="ln"/><polygon points="550,68 541,63 541,73" class="hd"/><polyline points="647,100 647,118 220,118 220,108" class="ln"/><polygon points="220,100 215,109 225,109" class="hd"/><text x="433" y="136" text-anchor="middle" class="t-s">안 되면 오류를 붙여 넣고 다시 시킨다</text><rect x="130" y="166" width="180" height="64" rx="8" class="box-acc"/><text x="220.0" y="194" text-anchor="middle" class="t-b">설계해서 맡긴다</text><text x="220.0" y="214" text-anchor="middle" class="t-s">목표 · 제약 · 완료 기준</text><rect x="350" y="166" width="160" height="64" rx="8" class="box-acc"/><text x="430.0" y="194" text-anchor="middle" class="t-b">에이전트가 한다</text><text x="430.0" y="214" text-anchor="middle" class="t-s">계획 → 실행 → 검증</text><rect x="550" y="166" width="194" height="64" rx="8" class="box-acc"/><text x="647.0" y="194" text-anchor="middle" class="t-b">사람이 확인한다</text><text x="647.0" y="214" text-anchor="middle" class="t-s">계획 승인 · 결과 검수</text><polyline points="310,198 342,198" class="ln-acc"/><polygon points="350,198 341,193 341,203" class="hd-acc"/><polyline points="510,198 542,198" class="ln-acc"/><polygon points="550,198 541,193 541,203" class="hd-acc"/><polyline points="647,230 647,248 220,248 220,238" class="ln-acc"/><polygon points="220,230 215,239 225,239" class="hd-acc"/><text x="433" y="266" text-anchor="middle" class="t-s t-acc">실수가 나오면 일하는 환경을 고친다</text></svg></div>
+    <figcaption><b>도식 5.</b> 둘 다 AI가 만듭니다. 달라지는 것은 무엇을 주고, 무엇을 확인하고, 틀렸을 때 어디를 고치느냐입니다.</figcaption>
+  </figure>
+
+  <div class="table-wrap">
+    <table class="wide">
+      <thead><tr><th></th><th>바이브 코딩</th><th>에이전틱 엔지니어링</th><th>코드 밖 업무로 옮기면</th></tr></thead>
+      <tbody>
+        <tr><th>무엇을 주나</th><td>느낌, 한 줄 요청</td><td>목표, 제약, 완료 기준</td><td>목적, 자료, 지켜야 할 기준, 결과 형식</td></tr>
+        <tr><th>무엇을 확인하나</th><td>돌아가는지</td><td>계획, 변경 내역, 테스트 결과</td><td>계획, 숫자와 인용의 출처, 원본과의 대조</td></tr>
+        <tr><th>틀렸을 때</th><td>다시 시킨다</td><td>같은 실수를 못 하게 환경을 고친다</td><td>지침과 양식을 고쳐 다음에도 적용되게 한다</td></tr>
+        <tr><th>어디에 맞나</th><td>버려도 되는 시제품, 실험</td><td>책임져야 하는 결과물</td><td>밖으로 나가는 문서, 돈과 계약이 걸린 일</td></tr>
+        <tr><th>사람의 자리</th><td>구경하는 사람</td><td>설계하고 감독하고 검수하는 사람</td><td>맡기고 승인하고 책임지는 사람</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>코드를 한 줄도 쓰지 않는 사람에게도 같은 갈림길이 있습니다. “보고서 좀 써줘”라고 하고 그럴듯하면 그대로 보내는 것은 바이브 코딩과 같은 방식입니다. 버려도 되는 초안에는 충분합니다. 내 이름으로 나가는 문서라면 오른쪽 두 칸처럼 일해야 합니다.</p>
+
+  <div class="principle"><span class="label">가져갈 문장</span><p class="say">보지 않고 맡기면 바이브, 설계하고 확인하면 엔지니어링이다.</p></div>
+</section>
+
+<section id="three-skills" class="prose" aria-labelledby="h-skills">
+  <div class="sec-head"><span class="sec-no">6</span><h2 id="h-skills">코딩 에이전트 시대가 남긴 세 가지 기술</h2></div>
+
+  <div class="scenes two">
+    <div class="scene">
+      <p class="when">2026년 2월 11일</p>
+      <p class="quote" lang="en">“Humans steer. Agents execute.”</p>
+      <p class="ko">사람은 방향을 잡고 에이전트는 실행한다.</p>
+      <p class="who">OpenAI의 한 팀이 다섯 달 동안 사람이 직접 쓴 코드 없이 약 100만 줄짜리 제품을 만든 기록입니다. 제목이 ‘하네스 엔지니어링’이었습니다. (<a href="https://openai.com/index/harness-engineering/">OpenAI</a>)</p>
+    </div>
+    <div class="scene">
+      <p class="when">2026년 3월 31일</p>
+      <p class="quote" lang="en">“human error, not a security breach”</p>
+      <p class="ko">사람의 실수였고 침해는 아니었다.</p>
+      <p class="who">배포 실수로 Claude Code의 소스 약 50만 줄이 공개됐습니다(<a href="https://www.axios.com/2026/03/31/anthropic-leaked-source-code-ai">Axios</a>). 새어 나간 것은 Claude Code의 코드, 곧 하네스였습니다. Anthropic이 낸 삭제 요청에 한때 깃허브 저장소 약 8,100개가 걸렸습니다(<a href="https://techcrunch.com/2026/04/01/anthropic-took-down-thousands-of-github-repos-trying-to-yank-its-leaked-source-code-a-move-the-company-says-was-an-accident/">TechCrunch</a>).</p>
+    </div>
+  </div>
+
+  <p>두 장면이 같은 곳을 가리킵니다. 한 회사는 모델 바깥을 설계하는 일이 엔지니어의 본업이 됐다고 썼고, 다른 회사는 모델 바깥의 코드가 새어 나가자 서둘러 거둬들이려 했습니다. 모델만큼 모델 바깥이 값진 것이 됐습니다.</p>
+  <p>에이전트에게 맡기는 과제가 커지자 요청문을 잘 쓰는 것만으로는 부족해졌고, 그 자리에서 기술 세 가지가 이름을 얻었습니다. 앞의 것을 밀어낸 것이 아니라 바깥에 한 겹씩 더해졌습니다.</p>
+
+  <figure class="fig">
+    <div class="fig-panel"><svg viewBox="0 0 760 330" role="img" aria-label="세 겹으로 쌓인 기술. 가장 안쪽 프롬프트 엔지니어링은 이번 요청을 잘 쓰는 일이다. 그 바깥의 컨텍스트 엔지니어링은 지침 파일, 스킬, 자료와 기록, 압축과 나눠 읽기로 모델이 읽을 것을 설계한다. 가장 바깥의 하네스 엔지니어링은 도구와 작업대, 권한과 승인, 검증, 상태를 파일에 두는 일로 일하는 환경을 설계한다. 사람은 목표와 제약과 완료 기준을 주어 업무를 위임하고 결과를 받는다." xmlns="http://www.w3.org/2000/svg"><rect x="16" y="118" width="150" height="96" rx="8" class="box"/><text x="91" y="146" text-anchor="middle" class="t-b">사람</text><text x="91" y="168" text-anchor="middle" class="t-b t-acc">업무 위임</text><text x="91" y="188" text-anchor="middle" class="t-s">목표 · 제약</text><text x="91" y="204" text-anchor="middle" class="t-s">완료 기준</text><polyline points="166,150 218,150" class="ln"/><polygon points="226,150 217,145 217,155" class="hd"/><text x="196" y="140" text-anchor="middle" class="t-s">맡긴다</text><polyline points="226,186 174,186" class="ln"/><polygon points="166,186 175,181 175,191" class="hd"/><text x="196" y="204" text-anchor="middle" class="t-s">결과</text><rect x="226" y="16" width="518" height="298" rx="12" class="box"/><text x="244" y="42" text-anchor="start" class="t-b">하네스 엔지니어링</text><text x="728" y="42" text-anchor="end" class="t-s">일하는 환경을 설계한다</text><rect x="244" y="268" width="114" height="30" rx="6" class="box-in"/><text x="301" y="288" text-anchor="middle" class="t-s2">도구 · 작업대</text><rect x="366" y="268" width="114" height="30" rx="6" class="box-in"/><text x="423" y="288" text-anchor="middle" class="t-s2">권한 · 승인</text><rect x="488" y="268" width="114" height="30" rx="6" class="box-in"/><text x="545" y="288" text-anchor="middle" class="t-s2">검증</text><rect x="610" y="268" width="114" height="30" rx="6" class="box-in"/><text x="667" y="288" text-anchor="middle" class="t-s2">상태를 파일에</text><rect x="244" y="58" width="482" height="194" rx="10" class="box-acc"/><text x="262" y="84" text-anchor="start" class="t-b t-acc">컨텍스트 엔지니어링</text><text x="710" y="84" text-anchor="end" class="t-s">모델이 읽을 것을 설계한다</text><rect x="262" y="206" width="104" height="30" rx="6" class="box-in"/><text x="314" y="226" text-anchor="middle" class="t-s2">지침 파일</text><rect x="374" y="206" width="104" height="30" rx="6" class="box-in"/><text x="426" y="226" text-anchor="middle" class="t-s2">스킬</text><rect x="486" y="206" width="104" height="30" rx="6" class="box-in"/><text x="538" y="226" text-anchor="middle" class="t-s2">자료 · 기록</text><rect x="598" y="206" width="104" height="30" rx="6" class="box-in"/><text x="650" y="226" text-anchor="middle" class="t-s2">압축 · 나눠 읽기</text><rect x="262" y="100" width="446" height="92" rx="8" class="box-in"/><text x="280" y="138" text-anchor="start" class="t-b">프롬프트 엔지니어링</text><text x="280" y="158" text-anchor="start" class="t-s">이번 요청을 잘 쓴다</text><polyline points="450,146 552,146" class="ln"/><polygon points="560,146 551,141 551,151" class="hd"/><text x="505" y="136" text-anchor="middle" class="t-s">읽힌다</text><rect x="560" y="116" width="130" height="60" rx="8" class="box"/><text x="625" y="151" text-anchor="middle" class="t-b">모델</text></svg></div>
+    <figcaption><b>도식 6.</b> 프롬프트는 이번 요청을, 컨텍스트는 모델이 읽을 것을, 하네스는 일하는 환경을 설계합니다. 업무 위임은 그 바깥에서 사람이 맡기고 확인하는 방식입니다. 안쪽 것은 사라지지 않습니다.</figcaption>
+  </figure>
+
+  <div class="table-wrap">
+    <table class="wide">
+      <thead><tr><th>기술</th><th>설계하는 것</th><th>묻는 질문</th><th>코딩 에이전트에서 굳은 장치</th><th>이름이 퍼진 때</th></tr></thead>
+      <tbody>
+        <tr><th>프롬프트<br>엔지니어링</th><td>이번 요청</td><td>무엇을 어떻게 말할까</td><td>역할, 형식, 예시를 담은 요청문</td><td>챗봇이 퍼진 뒤</td></tr>
+        <tr><th>컨텍스트<br>엔지니어링</th><td>모델이 이번에 읽을 것 전체</td><td>무엇을 읽히고 무엇을 뺄까</td><td>지침 파일, 스킬, 압축, 나눠 읽기</td><td>2025년 6월</td></tr>
+        <tr><th>하네스<br>엔지니어링</th><td>모델 바깥의 일하는 환경</td><td>어디에서, 무엇으로, 어떤 검사를 받으며 일하게 할까</td><td>작업대, 권한과 승인, 테스트와 검토, 상태 파일</td><td>2026년 2월</td></tr>
+        <tr><th>업무 위임</th><td>사람과 에이전트 사이의 약속</td><td>무엇을 맡기고 어떻게 확인할까</td><td>목표·제약·완료 기준, 계획을 먼저 받는 절차</td><td>2025년부터</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>업무 위임: 목표를 주고 결과를 확인한다</h3>
+  <p>위임은 요청과 다릅니다. 요청은 한 단계를 시키는 것이고, 위임은 목표를 주고 단계는 에이전트가 정하게 하는 것입니다. 그러려면 세 가지를 줘야 합니다. 무엇을 이루려는지(목표), 무엇을 건드리면 안 되는지(제약), 무엇이 되면 끝난 것인지(완료 기준). 4장의 계획 모드가 이 약속을 절차로 만든 것입니다. 3편의 ‘준비와 실행 사이’가 여기에서 이어집니다.</p>
+
+  <h3>컨텍스트 엔지니어링: 읽을 것을 설계한다</h3>
+  <p>1편에서 저장된 것이 매번 전부 들어가지는 않고 고르는 단계가 있다고 했습니다. 그 고르기를 설계하는 일입니다. 2025년 6월 Shopify의 토비 뤼트케가 프롬프트 엔지니어링보다 이 말이 낫다고 썼고, 카파시가 동의하며 다음 단계에 딱 맞는 정보로 컨텍스트 창을 채우는 섬세한 기술이라고 풀었습니다(<a href="https://simonwillison.net/2025/Jun/27/context-engineering/">Simon Willison</a>). Anthropic은 석 달 뒤 컨텍스트를 한정된 자원으로 다뤄야 한다고 정리했습니다. 창에 든 것이 많아질수록 모델이 정확히 떠올리는 힘이 떨어지니, 원하는 결과에 필요한 가장 적은 정보를 찾으라는 것입니다(<a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Anthropic</a>).</p>
+  <ul>
+    <li><strong>지침 파일.</strong> 이 프로젝트에서 늘 알아야 할 것을 적어 두는 파일입니다. CLAUDE.md, AGENTS.md가 그것입니다. AGENTS.md는 2025년 8월에 공개돼 그해 12월 리눅스 재단 산하 재단에 기증됐습니다(<a href="https://openai.com/blog/agentic-ai-foundation">OpenAI</a>).</li>
+    <li><strong>스킬.</strong> 그 일을 할 때만 불러오는 절차 묶음입니다. 처음에는 이름과 설명만 싣고, 필요해지면 본문을 읽습니다. Anthropic은 신입 사원에게 주는 업무 안내서에 견줬습니다(<a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Anthropic</a>).</li>
+    <li><strong>압축과 나눠 읽기.</strong> 길어진 대화를 줄여서 정리하고, 조사는 별도의 에이전트에게 맡겨 요약만 돌려받습니다. 3편의 장기 메모리가 여기에서 이어집니다.</li>
+  </ul>
+  <p>많이 넣는다고 좋아지지 않습니다. 100만 줄을 만든 OpenAI의 그 팀은 지침 파일 하나에 전부 넣는 방식이 실패했다고 적었습니다. 100줄쯤 되는 목차만 남기고 자세한 내용은 문서 폴더에서 찾아 읽게 바꿨습니다.</p>
+
+  <h3>하네스 엔지니어링: 일하는 환경을 설계한다</h3>
+  <p>1편 도식 4에서 에이전트는 모델에 하네스를 더한 것이라고 했습니다. 하네스는 모델이 일할 수 있게 도구, 권한, 검증, 진행 상태를 이어 주는 주변 구조입니다. 그 구조를 설계하는 일에 2026년 2월 이름이 붙었습니다. 개발자 미첼 하시모토가 에이전트가 실수할 때마다 같은 실수를 다시 못 하게 환경을 고치는 습관을 그렇게 불렀고(<a href="https://developertoolkit.ai/en/glossary/harness-engineering/">Developer Toolkit</a>), 엿새 뒤 OpenAI가 그 이름을 제목에 건 글을 냈습니다. 그 글에서 엔지니어의 일은 코드를 쓰는 데에서 환경을 설계하고, 의도를 명시하고, 피드백 고리를 만드는 쪽으로 옮겨 갑니다. 규칙은 말로 부탁하지 않고 검사 도구로 강제합니다.</p>
+  <p>핵심은 목표와 상태와 검증을 모델 바깥에 두는 것입니다. 랠프 루프가 가장 단순한 예입니다. 에이전트를 매번 새 창으로 다시 시작시키되, 할 일 목록과 진행 상황은 파일과 Git에 남기고, 테스트가 틀린 결과를 돌려보내게 합니다(<a href="https://ghuntley.com/ralph/">Huntley</a>). Anthropic도 2025년 11월 같은 결론을 글로 냈습니다. 새 창으로 시작한 에이전트가 일의 상태를 빨리 파악하게 하는 열쇠는 진행 기록 파일과 Git 기록이라는 것입니다(<a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents">Anthropic</a>). 모델의 기억을 믿지 않고 환경이 기억하게 합니다. 3편의 작업노트가 바로 이 파일입니다.</p>
+
+  <h3>한 회사가 만든 것이 아닙니다</h3>
+  <p>이 장치들에는 발명자가 여럿입니다. 코드 자동완성은 GitHub가 퍼뜨렸고, 편집기 안의 에이전트는 Cursor가 자리 잡게 했습니다. 도구를 잇는 규격(MCP)과 스킬은 Anthropic이, AGENTS.md는 OpenAI가, 랠프 루프는 개발자 한 사람이 내놓았습니다. 계획 모드는 Cursor와 Claude Code가 저마다 만들었습니다. 서로의 것을 가져다 쓰면서 같은 모양으로 모였습니다. 경쟁의 질문도 누가 더 좋은 모델을 가졌느냐에서, 누가 모델을 더 오래, 더 안정되게, 더 싸게 일하게 만드느냐로 옮겨 갔습니다.</p>
+
+  <p class="keyline">프롬프트는 말을, 컨텍스트는 읽을 것을, 하네스는 일하는 환경을 설계합니다. 위임은 그 위에서 사람이 맡기고 확인하는 방식입니다.</p>
+
+  <div class="principle"><span class="label">가져갈 문장</span><p class="say">대체가 아니라 축적이다. 프롬프트 위에 컨텍스트, 그 위에 하네스가 쌓였다.</p></div>
+</section>
+
+<section id="work-agent" class="prose" aria-labelledby="h-work">
+  <div class="sec-head"><span class="sec-no">7</span><h2 id="h-work">업무 에이전트는 이렇게 태어났다</h2></div>
+
+  <div class="scenes">
+    <div class="scene">
+      <p class="when">2026년 1월 12일</p>
+      <p class="quote" lang="en">“Claude Code for the rest of your work”</p>
+      <p class="ko">나머지 업무를 위한 Claude Code.</p>
+      <p class="who">Cowork 연구 프리뷰(<a href="https://simonwillison.net/2026/Jan/12/claude-cowork/">Simon Willison</a>). 약 열흘 만에, 대부분 Claude Code로 만들었다고 Claude Code 책임자가 밝혔습니다(<a href="https://fortune.com/2026/01/13/anthropic-claude-cowork-ai-agent-file-managing-threaten-startups">Fortune</a>).</p>
+    </div>
+    <div class="scene">
+      <p class="when">2026년 2월 3일 · 월가</p>
+      <p class="quote" lang="en">“SaaSpocalypse”</p>
+      <p class="ko">플러그인 열한 개가 흔든 소프트웨어 주가.</p>
+      <p class="who">Anthropic이 Cowork에 법무, 재무, 영업 같은 직무별 플러그인을 붙이자 소프트웨어 주식이 급락했습니다(<a href="https://www.goodmorningamerica.com/news/story/new-ai-tool-hammered-software-stocks-week-129845251">ABC News</a>). 약 2,850억 달러가 사라졌다고 보도됐습니다(<a href="https://www.outlookbusiness.com/explainers/saaspocalypse-explained-decoding-claude-cowork-plugins-that-triggered-havoc-in-it">Outlook Business</a>).</p>
+    </div>
+    <div class="scene">
+      <p class="when">2026년 7월 9일</p>
+      <p class="quote num">100만 명</p>
+      <p class="ko">개발이 아닌 일에 Codex를 쓰던 사람들.</p>
+      <p class="who">OpenAI가 Codex 기술을 넣은 ChatGPT Work를 내놓으며 밝힌 숫자입니다. 주간 사용자는 500만 명을 넘었습니다. (<a href="https://openai.com/index/chatgpt-for-your-most-ambitious-work/">OpenAI</a>)</p>
+    </div>
+  </div>
+
+  <p>코딩 에이전트를 쓰던 사람들이 먼저 선을 넘었습니다. 파일을 읽고, 도구를 실행하고, 결과를 확인해 고치는 구조는 코드가 아닌 일에도 그대로 통했기 때문입니다. Anthropic은 2025년 9월 Claude Code SDK의 이름을 Claude Agent SDK로 바꿨습니다. 코딩을 넘어 여러 종류의 에이전트를 만드는 데 쓰이게 됐다는 이유였습니다(<a href="https://code.claude.com/docs/en/agent-sdk/migration-guide.md">Claude 문서</a>). Google은 2025년 11월 에이전트 중심 개발 도구 Antigravity를 내놓았고(<a href="https://mjtsai.com/blog/2025/11/19/gemini-3-0-and-antigravity/">Michael Tsai</a>), 2026년 5월 그 하네스 위에 24시간 도는 개인 에이전트 Gemini Spark를 올렸습니다(<a href="https://techcrunch.com/2026/05/19/google-introduces-gemini-spark-a-24-7-agentic-assistant-with-gmail-integration/">TechCrunch</a>).</p>
+
+  <figure class="fig">
+    <div class="fig-panel"><svg viewBox="0 0 760 258" role="img" aria-label="세 회사가 걸은 같은 길. Anthropic은 2025년 2월 Claude Code에서 같은 구조로 2026년 1월 Cowork를 만들었고 2026년 10월 Claude Duet을 내놓았다. OpenAI는 2025년 Codex의 기술을 넣어 2026년 7월 ChatGPT Work를 만들었고 2026년 9월 ChatGPT Dots를 내놓았다. Google은 2025년 11월 Antigravity의 하네스로 2026년 5월 24시간 도는 개인 에이전트 Gemini Spark를 만들었다." xmlns="http://www.w3.org/2000/svg"><text x="192" y="24" text-anchor="middle" class="t-b">코딩 에이전트</text><text x="438" y="24" text-anchor="middle" class="t-b t-acc">업무 에이전트</text><text x="652" y="24" text-anchor="middle" class="t-b t-s">비서 에이전트 · 3편</text><text x="16" y="73" text-anchor="start" class="t-b t-s">Anthropic</text><rect x="104" y="40" width="176" height="56" rx="8" class="box"/><text x="192" y="65" text-anchor="middle" class="t-b">Claude Code</text><text x="192" y="84" text-anchor="middle" class="t-s">2025년 2월</text><polyline points="280,68 342,68" class="ln-acc"/><polygon points="350,68 341,63 341,73" class="hd-acc"/><text x="313" y="58" text-anchor="middle" class="t-s t-acc">같은 구조</text><rect x="350" y="40" width="176" height="56" rx="8" class="box-acc"/><text x="438" y="65" text-anchor="middle" class="t-b">Cowork</text><text x="438" y="84" text-anchor="middle" class="t-s">2026년 1월</text><rect x="560" y="40" width="184" height="56" rx="8" class="box-dash"/><text x="652" y="65" text-anchor="middle" class="t-b t-s2">Claude Duet</text><text x="652" y="84" text-anchor="middle" class="t-s">2026년 10월</text><text x="16" y="147" text-anchor="start" class="t-b t-s">OpenAI</text><rect x="104" y="114" width="176" height="56" rx="8" class="box"/><text x="192" y="139" text-anchor="middle" class="t-b">Codex</text><text x="192" y="158" text-anchor="middle" class="t-s">2025년 4~5월</text><polyline points="280,142 342,142" class="ln-acc"/><polygon points="350,142 341,137 341,147" class="hd-acc"/><text x="313" y="132" text-anchor="middle" class="t-s t-acc">기술 내장</text><rect x="350" y="114" width="176" height="56" rx="8" class="box-acc"/><text x="438" y="139" text-anchor="middle" class="t-b">ChatGPT Work</text><text x="438" y="158" text-anchor="middle" class="t-s">2026년 7월</text><rect x="560" y="114" width="184" height="56" rx="8" class="box-dash"/><text x="652" y="139" text-anchor="middle" class="t-b t-s2">ChatGPT Dots</text><text x="652" y="158" text-anchor="middle" class="t-s">2026년 9월</text><text x="16" y="221" text-anchor="start" class="t-b t-s">Google</text><rect x="104" y="188" width="176" height="56" rx="8" class="box"/><text x="192" y="213" text-anchor="middle" class="t-b">Antigravity</text><text x="192" y="232" text-anchor="middle" class="t-s">2025년 11월</text><polyline points="280,216 342,216" class="ln-acc"/><polygon points="350,216 341,211 341,221" class="hd-acc"/><text x="313" y="206" text-anchor="middle" class="t-s t-acc">하네스</text><rect x="350" y="188" width="394" height="56" rx="8" class="box-acc"/><text x="547" y="213" text-anchor="middle" class="t-b">Gemini Spark</text><text x="547" y="232" text-anchor="middle" class="t-s">2026년 5월 · 24시간 도는 개인 에이전트</text></svg></div>
+    <figcaption><b>도식 7.</b> 세 회사가 같은 길을 걸었습니다. 코딩 에이전트의 구조와 기술이 업무 에이전트로 넘어갔습니다. 화살표는 각 회사가 밝힌 관계만 그렸고, 점선 상자는 3편에서 다루는 제품입니다.</figcaption>
+  </figure>
+
+  <h3>코드 밖으로 나오면서 달라진 것</h3>
+  <p>다루는 대상이 코드에서 문서, 표, 발표 자료로 바뀌었습니다. 더 큰 변화는 사용자에 대한 가정입니다. 개발자는 터미널과 Git을 알고, 잘못되면 되돌릴 줄 압니다. 업무 에이전트의 사용자에게는 그 가정이 통하지 않습니다. 3장의 네 조건 가운데 ‘되돌릴 수 있다’가 빠진 채로 시작하는 셈입니다.</p>
+  <p>그래서 권한을 다시 설계했습니다. Cowork는 사용자가 고른 폴더와 도구 안에서만 읽고 쓰고, 삭제는 승인을 받으며, 설정에 따라 계획을 먼저 보여 주고 승인을 기다립니다(<a href="https://claude.com/blog/cowork-research-preview">Anthropic</a>). 업무 에이전트는 코딩 에이전트에 화면만 입힌 것이 아닙니다. 같은 구조에 권한과 승인을 다시 짠 것입니다.</p>
+  <ul>
+    <li><strong>기본 앱 안으로 들어옵니다.</strong> ChatGPT 데스크톱 앱은 Chat, Work, Codex를 한 앱에 담았습니다. Anthropic도 Cowork를 Claude 자체로 합치는 중이라고 안내합니다. 업무 에이전트가 따로 찾아가는 제품에서 기본 기능이 되고 있습니다.</li>
+    <li><strong>시간을 맡기 시작합니다.</strong> ChatGPT Work의 예약 작업은 한 번, 반복, 이벤트 발생, 변화 감시로 실행을 시작합니다. 3편에서 볼 시작 조건이 업무 에이전트에 이미 들어와 있습니다.</li>
+  </ul>
+
+  <div class="principle"><span class="label">가져갈 문장</span><p class="say">코딩 에이전트의 구조가 코드 밖으로 나온 것이 업무 에이전트다.</p></div>
+</section>
+
+<section id="inherit" class="prose" aria-labelledby="h-inherit">
+  <div class="sec-head"><span class="sec-no">8</span><h2 id="h-inherit">코딩 에이전트가 물려준 것</h2></div>
+  <p>업무 에이전트와 비서 에이전트를 처음 보면 새로운 장치가 많아 보입니다. 대부분은 코딩 에이전트에서 이미 굳은 것입니다. 이름과 자리가 바뀌었을 뿐입니다.</p>
+
+  <figure class="fig">
+    <div class="fig-panel"><svg viewBox="0 0 760 250" role="img" aria-label="물려받아 쌓인 것. 코딩 에이전트의 모델과 하네스, 지침 파일, 도구와 작업대, 검증, 상태를 파일에 두기, 계획 후 실행이 가장 안쪽에 있다. 업무 에이전트는 그것을 그대로 두고 고른 폴더와 권한, 문서와 표와 앱, 삭제 전 승인을 더했다. 비서 에이전트는 다시 시작 조건, 계정 연결, 장기 메모리를 더했다." xmlns="http://www.w3.org/2000/svg"><rect x="16" y="16" width="728" height="218" rx="12" class="box-dash"/><text x="660" y="46" text-anchor="middle" class="t-b">비서 에이전트</text><text x="660" y="64" text-anchor="middle" class="t-s">3편</text><rect x="596" y="80" width="128" height="30" rx="6" class="box-in"/><text x="660" y="100" text-anchor="middle" class="t-s2">시작 조건</text><rect x="596" y="120" width="128" height="30" rx="6" class="box-in"/><text x="660" y="140" text-anchor="middle" class="t-s2">계정 연결</text><rect x="596" y="160" width="128" height="30" rx="6" class="box-in"/><text x="660" y="180" text-anchor="middle" class="t-s2">장기 메모리</text><rect x="28" y="28" width="548" height="194" rx="10" class="box"/><text x="486" y="56" text-anchor="middle" class="t-b">업무 에이전트</text><rect x="416" y="80" width="140" height="30" rx="6" class="box-in"/><text x="486" y="100" text-anchor="middle" class="t-s2">고른 폴더와 권한</text><rect x="416" y="120" width="140" height="30" rx="6" class="box-in"/><text x="486" y="140" text-anchor="middle" class="t-s2">문서 · 표 · 앱</text><rect x="416" y="160" width="140" height="30" rx="6" class="box-in"/><text x="486" y="180" text-anchor="middle" class="t-s2">삭제 전 승인</text><rect x="40" y="40" width="352" height="170" rx="8" class="box-acc"/><text x="216" y="66" text-anchor="middle" class="t-b t-acc">코딩 에이전트</text><rect x="54" y="80" width="156" height="30" rx="6" class="box-in"/><text x="132" y="100" text-anchor="middle" class="t-s2">모델 + 하네스</text><rect x="222" y="80" width="156" height="30" rx="6" class="box-in"/><text x="300" y="100" text-anchor="middle" class="t-s2">지침 파일</text><rect x="54" y="120" width="156" height="30" rx="6" class="box-in"/><text x="132" y="140" text-anchor="middle" class="t-s2">도구 · 작업대</text><rect x="222" y="120" width="156" height="30" rx="6" class="box-in"/><text x="300" y="140" text-anchor="middle" class="t-s2">검증</text><rect x="54" y="160" width="156" height="30" rx="6" class="box-in"/><text x="132" y="180" text-anchor="middle" class="t-s2">상태를 파일에</text><rect x="222" y="160" width="156" height="30" rx="6" class="box-in"/><text x="300" y="180" text-anchor="middle" class="t-s2">계획 후 실행</text></svg></div>
+    <figcaption><b>도식 8.</b> 안쪽 것을 그대로 두고 바깥에 더했습니다. 업무 에이전트는 권한과 대상을, 비서 에이전트는 시간과 계정과 기억을 더했습니다.</figcaption>
+  </figure>
+
+  <div class="table-wrap">
+    <table class="wide">
+      <thead><tr><th>장치</th><th>코딩 에이전트에서</th><th>업무 에이전트에서</th><th>비서 에이전트에서 (3편)</th></tr></thead>
+      <tbody>
+        <tr><th>지침 파일</th><td>CLAUDE.md, AGENTS.md</td><td>프로젝트와 폴더의 지침</td><td>AGENTS.md에 적는 비서용 안내 (6장)</td></tr>
+        <tr><th>스킬</th><td>필요할 때 불러오는 절차 묶음</td><td>문서 양식, 업무 절차</td><td>반복해서 맡길 일의 절차</td></tr>
+        <tr><th>커넥터</th><td>도구와 데이터를 잇는 규격(MCP)</td><td>메일, 드라이브, 업무 시스템 연결</td><td>연결한 계정 전체</td></tr>
+        <tr><th>계획 후 실행</th><td>계획 모드</td><td>계획을 보여 주고 승인을 기다린다</td><td>준비와 실행 사이의 승인 (5장)</td></tr>
+        <tr><th>권한과 격리</th><td>명령마다 받는 승인, 격리된 실행</td><td>고른 폴더 안에서만, 삭제는 승인</td><td>보내기, 결제, 삭제 앞에서 멈춤 (5장)</td></tr>
+        <tr><th>상태를 파일에</th><td>Git, 진행 기록 파일</td><td>프로젝트 폴더의 작업 기록</td><td>작업노트 (6장)</td></tr>
+        <tr><th>나눠 맡기기</th><td>서브에이전트</td><td>여러 작업을 동시에</td><td>비서가 작업 에이전트를 시작한다 (6장)</td></tr>
+        <tr><th>창 관리</th><td>압축</td><td>긴 작업의 압축</td><td>장기 메모리 (2장)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>그래서 순서가 있습니다. 비서 에이전트에게 일을 잘 맡기려면 업무 에이전트에게 맡기는 법을 알아야 하고, 그 법은 코딩 에이전트에서 만들어졌습니다. 코드를 쓰지 않는 사람이 이 역사를 알아야 하는 이유입니다.</p>
+</section>
+
+<section id="check" class="prose" aria-labelledby="h-check">
+  <div class="sec-head"><h2 id="h-check">정리</h2></div>
+  <h3 style="margin-top:0">가져갈 문장 여섯 개</h3>
+  <ol class="principles">
+    <li>똑똑해진 것만이 아니다. 맡기는 단위가 커졌다.</li>
+    <li>맡길 수 있는 일은 확인할 수 있는 일이다.</li>
+    <li>모델은 엔진, 하네스는 조향장치다. 체감은 둘의 곱이다.</li>
+    <li>보지 않고 맡기면 바이브, 설계하고 확인하면 엔지니어링이다.</li>
+    <li>대체가 아니라 축적이다. 프롬프트 위에 컨텍스트, 그 위에 하네스가 쌓였다.</li>
+    <li>코딩 에이전트의 구조가 코드 밖으로 나온 것이 업무 에이전트다.</li>
+  </ol>
+
+  <div class="note">
+    <h4>3편으로</h4>
+    <p>업무 에이전트는 내가 맡길 때 움직입니다. 여기에 ‘언제 움직이는가’가 붙으면 비서 에이전트가 됩니다. 이 편에서 본 지침 파일, 계획 후 실행, 진행 기록 파일이 3편에서 AGENTS.md, 준비와 실행 사이의 승인, 작업노트로 다시 나옵니다. <a href="03-assistant-agent.html">비서 에이전트, 같은 그림으로 보기</a></p>
+  </div>
+</section>
+
+<section id="timeline" class="prose" aria-labelledby="h-timeline">
+  <div class="sec-head"><h2 id="h-timeline">연표</h2></div>
+  <div class="table-wrap">
+    <table class="tl">
+      <thead><tr><th>때</th><th>일어난 일</th><th>뜻</th></tr></thead>
+      <tbody>
+        <tr><td>2021년 6월 29일</td><td>GitHub Copilot 기술 프리뷰</td><td>편집기 안 자동완성이 퍼진다</td></tr>
+        <tr><td>2023년 4월 6일</td><td>Cursor 0.2.0</td><td>편집기가 AI와 함께 일하는 자리가 된다</td></tr>
+        <tr><td>2024년 2월 12일</td><td>젠슨 황 “모두가 프로그래머”</td><td>말로 만든다는 이야기가 무대에 오른다</td></tr>
+        <tr><td>2024년 3월 12일</td><td>Devin 시연</td><td>혼자 끝내는 AI 개발자라는 상상</td></tr>
+        <tr><td>2024년 11월 24일</td><td>Cursor에 초기 에이전트</td><td>AI가 스스로 맥락을 고르고 터미널을 쓴다</td></tr>
+        <tr><td>2025년 2월 2일</td><td>‘바이브 코딩’</td><td>말로 만든다는 이야기가 이름을 얻는다</td></tr>
+        <tr><td>2025년 2월 24일</td><td>Claude Code 연구 프리뷰</td><td>터미널에서 과제를 통째로 맡긴다</td></tr>
+        <tr><td>2025년 3월 10일</td><td>아모데이 “코드의 90%”</td><td></td></tr>
+        <tr><td>2025년 4월 · 5월</td><td>Codex(터미널용, 클라우드)</td><td>과제마다 따로 환경을 띄워 맡긴다</td></tr>
+        <tr><td>2025년 5월 22일</td><td>Claude Code 정식 출시</td><td></td></tr>
+        <tr><td>2025년 6월</td><td>‘컨텍스트 엔지니어링’</td><td>읽을 것을 설계하는 일에 이름이 붙는다</td></tr>
+        <tr><td>2025년 7월 14일</td><td>랠프 루프</td><td>상태를 파일에 두고 반복 실행한다</td></tr>
+        <tr><td>2025년 8월</td><td>AGENTS.md 공개</td><td>지침 파일이 공통 형식이 된다</td></tr>
+        <tr><td>2025년 9월 29일</td><td>Claude Agent SDK로 개명 · Cursor 계획 모드</td><td>구조가 코딩 밖으로 넓어지고, 계획 먼저가 공통 답이 된다</td></tr>
+        <tr><td>2025년 10월 16일</td><td>에이전트 스킬</td><td>필요할 때 불러오는 절차 묶음</td></tr>
+        <tr><td>2025년 11월 6일</td><td>콜린스 올해의 단어</td><td>‘바이브 코딩’이 사전에 오른다</td></tr>
+        <tr><td>2025년 11월 18일</td><td>Google Antigravity</td><td>에이전트 중심 개발 도구</td></tr>
+        <tr><td>2025년 11월 24일</td><td>Opus 4.5 · 계획 모드 개편</td><td>원투펀치</td></tr>
+        <tr><td>2025년 11월 26일</td><td>Anthropic, 장기 실행 하네스 글</td><td>진행 기록 파일로 일을 이어받는다</td></tr>
+        <tr><td>2025년 12월 9일</td><td>Agentic AI Foundation</td><td>MCP와 AGENTS.md가 중립 재단으로 간다</td></tr>
+        <tr><td>2025년 12월 26일</td><td>카파시 “이렇게 뒤처진 적이 없다”</td><td>전문가가 느낀 변곡점</td></tr>
+        <tr><td>2026년 1월 12일</td><td>Cowork 연구 프리뷰</td><td>업무 에이전트가 나온다</td></tr>
+        <tr><td>2026년 2월 3일</td><td>소프트웨어 주가 급락</td><td>시장이 업무 에이전트를 읽는다</td></tr>
+        <tr><td>2026년 2월 초</td><td>‘에이전틱 엔지니어링’</td><td>바이브 코딩 다음의 이름</td></tr>
+        <tr><td>2026년 2월 5일 · 11일</td><td>‘하네스 엔지니어링’</td><td>환경을 설계하는 일에 이름이 붙는다</td></tr>
+        <tr><td>2026년 3월 31일</td><td>Claude Code 소스 유출</td><td>하네스가 지킬 자산임이 드러난다</td></tr>
+        <tr><td>2026년 5월 19일</td><td>Gemini Spark</td><td>코딩 도구의 하네스 위에 개인 에이전트</td></tr>
+        <tr><td>2026년 7월 9일</td><td>ChatGPT Work</td><td>Codex 기술이 업무 에이전트가 된다</td></tr>
+        <tr><td>2026년 8월~10월</td><td>비서 에이전트들</td><td>3편에서 다룹니다</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="terms" class="prose" aria-labelledby="h-terms">
+  <div class="sec-head"><h2 id="h-terms">용어 풀이</h2></div>
+  <dl class="terms">
+    <div><dt>자동완성</dt><dd>쓰고 있는 코드의 다음 부분을 AI가 제안하는 기능.</dd></div>
+    <div><dt>터미널</dt><dd>명령을 글로 입력해 컴퓨터를 다루는 창. 거의 모든 개발 도구를 여기에서 부릅니다.</dd></div>
+    <div><dt>저장소 · Git</dt><dd>코드와 그 변경 기록을 담아 두는 곳. Git은 모든 변경을 기록해 이전 상태로 돌아갈 수 있게 합니다.</dd></div>
+    <div><dt>테스트</dt><dd>결과가 맞는지 자동으로 판정하는 검사.</dd></div>
+    <div><dt>SWE-bench</dt><dd>실제 오픈소스 프로젝트의 깃허브 이슈를 에이전트가 고칠 수 있는지 보는 시험.</dd></div>
+    <div><dt>코딩 에이전트</dt><dd>목표를 받아 코드를 읽고, 고치고, 실행하고, 검증하는 에이전트.</dd></div>
+    <div><dt>업무 에이전트</dt><dd>같은 구조로 문서, 표, 파일, 업무 시스템을 다루는 에이전트.</dd></div>
+    <div><dt>바이브 코딩</dt><dd>AI가 만든 코드를 읽지 않고 결과만 보고 받아들이는 방식.</dd></div>
+    <div><dt>에이전틱 엔지니어링</dt><dd>에이전트에게 맡기되 사람이 설계하고 감독하고 검수하는 방식.</dd></div>
+    <div><dt>컨텍스트 창</dt><dd>모델이 한 번에 읽는 분량.</dd></div>
+    <div><dt>컨텍스트 엔지니어링</dt><dd>그 창에 무엇을 넣고 뺄지 설계하는 일.</dd></div>
+    <div><dt>하네스</dt><dd>모델이 일할 수 있게 도구, 권한, 검증, 진행 상태를 이어 주는 주변 구조.</dd></div>
+    <div><dt>하네스 엔지니어링</dt><dd>그 구조를 설계하고, 실수가 나올 때마다 고쳐 가는 일.</dd></div>
+    <div><dt>지침 파일</dt><dd>에이전트가 일을 시작할 때 읽는 안내문. CLAUDE.md, AGENTS.md.</dd></div>
+    <div><dt>스킬</dt><dd>특정한 일을 할 때만 불러오는 절차와 자료의 묶음.</dd></div>
+    <div><dt>MCP</dt><dd>에이전트를 바깥 도구와 데이터에 잇는 공통 규격.</dd></div>
+    <div><dt>계획 모드</dt><dd>실행하기 전에 계획을 먼저 세우고 사람의 승인을 받는 방식.</dd></div>
+    <div><dt>서브에이전트</dt><dd>일의 일부를 따로 맡아 처리하고 요약만 돌려주는 에이전트.</dd></div>
+    <div><dt>랠프 루프</dt><dd>에이전트를 같은 지시로 되풀이해 실행하면서 진행 상황을 파일에 남기는 방법.</dd></div>
+  </dl>
+</section>
+
+<footer>
+  <h2>출처</h2>
+  <p>2026년 11월 15일에 아래 자료를 열어 확인했습니다. 인용문은 원문의 짧은 구절이고 우리말은 뜻을 옮긴 것입니다. 제품은 자주 바뀌니 쓰기 전에 다시 확인하세요.</p>
+  <ol>
+    <li><a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/jensen-huang-advises-against-learning-to-code-leave-it-up-to-ai">Tom’s Hardware, Jensen Huang says kids shouldn’t learn to code</a>: 2024년 2월 세계정부정상회의 발언</li>
+    <li><a href="https://www.hotpress.com/culture/collins-dictionary-announces-vibe-coding-as-word-of-the-year-23116566">Hot Press, Collins Dictionary announces “vibe coding” as word of the year (2025년 11월 6일)</a>: 카파시의 원문 인용 포함</li>
+    <li><a href="https://www.businessinsider.nl/anthropics-ceo-says-that-in-3-to-6-months-ai-will-be-writing-90-of-the-code-software-developers-were-in-charge-of/">Business Insider, 아모데이의 2025년 3월 10일 발언과 Y Combinator 대표의 글</a></li>
+    <li><a href="https://github.blog/news-insights/product-news/introducing-github-copilot-ai-pair-programmer/">GitHub 블로그, Introducing GitHub Copilot: your AI pair programmer (2021년 6월 29일)</a></li>
+    <li><a href="https://cognition.ai/blog/introducing-devin">Cognition, Introducing Devin, the first AI software engineer (2024년 3월 12일)</a></li>
+    <li>Cursor 변경 기록: <a href="https://cursor.com/changelog/0-2-0">0.2.0 (2023년 4월 6일)</a>, <a href="https://cursor.com/changelog/0-43-x">0.43 (2024년 11월 24일)</a>, <a href="https://cursor.com/changelog/1-7">1.7 (2025년 9월 29일)</a></li>
+    <li><a href="https://www.anthropic.com/news/claude-3-7-sonnet">Anthropic, Claude 3.7 Sonnet and Claude Code (2025년 2월 24일)</a></li>
+    <li><a href="https://www.anthropic.com/news/claude-4">Anthropic, Introducing Claude 4 (2025년 5월 22일)</a>: Claude Code 정식 출시</li>
+    <li><a href="https://www.anthropic.com/news/anthropic-acquires-bun-as-claude-code-reaches-usd1b-milestone">Anthropic, Claude Code 연환산 매출 10억 달러 (2025년 12월 3일)</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/OpenAI_Codex_(AI_agent)">위키백과, OpenAI Codex (AI agent)</a>: Codex의 출시 날짜</li>
+    <li><a href="https://www.anthropic.com/news/claude-opus-4-5">Anthropic, Introducing Claude Opus 4.5 (2025년 11월 24일)</a>: 가격, 계획 모드, 병렬 세션. 시험 점수는 발표문의 그림에 실려 있습니다</li>
+    <li><a href="https://www.aol.com/news/guy-coined-vibe-coding-now-172146964.html">Business Insider(AOL 게재), 카파시의 2025년 12월 26일 글</a></li>
+    <li><a href="https://tech.yahoo.com/ai/chatgpt/articles/ai-agents-wrote-80-karpathys-175030864.html">Yahoo Tech, 2025년 12월의 변곡점</a></li>
+    <li><a href="https://thenewstack.io/vibe-coding-is-passe/">The New Stack, Vibe coding is passé (2026년 2월 10일)</a>: 카파시의 에이전틱 엔지니어링 글 보도</li>
+    <li><a href="https://simonwillison.net/2025/Jun/27/context-engineering/">Simon Willison, Context engineering (2025년 6월 27일)</a></li>
+    <li><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Anthropic, Effective context engineering for AI agents (2025년 9월 29일)</a></li>
+    <li><a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents">Anthropic, Effective harnesses for long-running agents (2025년 11월 26일)</a></li>
+    <li><a href="https://ghuntley.com/ralph/">Geoffrey Huntley, Ralph Wiggum as a “software engineer” (2025년 7월 14일)</a></li>
+    <li><a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Anthropic, Equipping agents for the real world with Agent Skills (2025년 10월 16일)</a></li>
+    <li><a href="https://code.claude.com/docs/en/agent-sdk/migration-guide.md">Claude 문서, Claude Agent SDK 이전 안내</a></li>
+    <li><a href="https://openai.com/blog/agentic-ai-foundation">OpenAI, Agentic AI Foundation (2025년 12월 9일)</a></li>
+    <li><a href="https://openai.com/index/harness-engineering/">OpenAI, Harness engineering: leveraging Codex in an agent-first world (2026년 2월 11일)</a></li>
+    <li><a href="https://developertoolkit.ai/en/glossary/harness-engineering/">Developer Toolkit, What is harness engineering?</a>: 하시모토의 2월 5일 글을 정리한 2차 자료입니다. 원문은 직접 열지 못했습니다</li>
+    <li><a href="https://www.axios.com/2026/03/31/anthropic-leaked-source-code-ai">Axios, Anthropic leaked its own Claude source code (2026년 3월 31일)</a></li>
+    <li><a href="https://techcrunch.com/2026/04/01/anthropic-took-down-thousands-of-github-repos-trying-to-yank-its-leaked-source-code-a-move-the-company-says-was-an-accident/">TechCrunch, 깃허브 삭제 요청 보도 (2026년 4월 1일)</a></li>
+    <li><a href="https://claude.com/blog/cowork-research-preview">Anthropic, Cowork: Claude Code for the rest of your work</a></li>
+    <li><a href="https://simonwillison.net/2026/Jan/12/claude-cowork/">Simon Willison, First impressions of Claude Cowork (2026년 1월 12일)</a></li>
+    <li><a href="https://fortune.com/2026/01/13/anthropic-claude-cowork-ai-agent-file-managing-threaten-startups">Fortune, Cowork 출시 보도 (2026년 1월 13일)</a></li>
+    <li><a href="https://www.goodmorningamerica.com/news/story/new-ai-tool-hammered-software-stocks-week-129845251">ABC News, Why a new AI tool hammered some software stocks this week (2026년 2월 5일)</a></li>
+    <li><a href="https://www.outlookbusiness.com/explainers/saaspocalypse-explained-decoding-claude-cowork-plugins-that-triggered-havoc-in-it">Outlook Business, SaaSpocalypse Explained</a>: 플러그인 11개와 약 2,850억 달러라는 숫자. 기간을 달리 잡은 다른 추산도 있습니다</li>
+    <li><a href="https://mjtsai.com/blog/2025/11/19/gemini-3-0-and-antigravity/">Michael Tsai, Gemini 3.0 and Antigravity (2025년 11월 19일)</a>: Google 발표문 인용</li>
+    <li><a href="https://techcrunch.com/2026/05/19/google-introduces-gemini-spark-a-24-7-agentic-assistant-with-gmail-integration/">TechCrunch, Google introduces Gemini Spark (2026년 5월 19일)</a></li>
+    <li><a href="https://openai.com/index/chatgpt-for-your-most-ambitious-work/">OpenAI, ChatGPT is now a partner for your most ambitious work (2026년 7월 9일)</a></li>
+    <li><a href="https://thenewstack.io/openai-codex-work-atlas/">The New Stack, OpenAI is folding Codex into the ChatGPT app (2026년 7월 9일)</a></li>
+  </ol>
+  <p>이 페이지는 글꼴을 온라인에서 불러옵니다. 연결이 없으면 기기의 기본 글꼴로 표시되고, 본문과 도식은 그대로 읽을 수 있습니다.</p>
+</footer>
+
+</main>
+
+</body>
+</html>

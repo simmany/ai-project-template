@@ -1,0 +1,29 @@
+%%{init: {'flowchart': {'wrappingWidth': 260, 'nodeSpacing': 30, 'rankSpacing': 50}}}%%
+flowchart TB
+  subgraph A[" "]
+    direction LR
+    F1["<b>① 시딩 · M1~M4</b><br/>학과·동아리·러닝크루 10곳<br/>설문 n≥100(부위 지도 포함)"]
+    F2["<b>② 착용 테스트단 · M3~M4</b><br/>30명 · 후기 20건"]
+    F3["<b>③ 크라우드펀딩 · M6 중~M7 초</b><br/>결제 1,000만 원<br/>주문 약 155건"]
+    F1 --> F2 --> F3
+  end
+  subgraph B[" "]
+    direction LR
+    F4["<b>④ 스토어 M9 초 + B2B M9~M10</b><br/>스토어 주문 175건<br/>+ B2B 30세트"]
+    F5["<b>⑤ 재구매·추천 · M10~</b><br/>2차년도 재구매율 20% 목표"]
+    T["<b>협약기간 합계 (전부 가정)</b><br/>소비자 주문 330건<br/>약 2,300만 원(공급가)"]
+    F4 --> F5 -.-> T
+  end
+  A --> B
+  style A fill:none,stroke:none
+  style B fill:none,stroke:none
+  class F1,F2,F3,F4,F5 assume
+  class T primary
+classDef our fill:#F26B38,stroke:#C4511F,color:#FFFFFF,font-weight:bold;
+classDef primary fill:#1B2A4A,stroke:#1B2A4A,color:#FFFFFF;
+classDef soft fill:#E9EDF3,stroke:#1B2A4A,color:#1B2A4A;
+classDef problem fill:#FBE9E5,stroke:#C8553D,color:#7A2E20;
+classDef cool fill:#DCEEF5,stroke:#2E86AB,color:#14506A;
+classDef eco fill:#E3F4EA,stroke:#3BAA6E,color:#1E5E3B;
+classDef neutral fill:#F2F4F7,stroke:#8C96A8,color:#4A5568;
+classDef assume fill:#FFFFFF,stroke:#8C96A8,stroke-dasharray:5 3,color:#4A5568;

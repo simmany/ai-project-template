@@ -1,0 +1,34 @@
+%%{init: {'flowchart': {'wrappingWidth': 400, 'nodeSpacing': 22, 'rankSpacing': 34, 'padding': 10}}}%%
+flowchart TB
+  subgraph R1["원단 → 패턴·샘플 (검증 3곳)"]
+    direction LR
+    S1["<b>① GRS 인증 원단</b><br/>국내 도매·밀, TC 확인<br/>2~3주 (가정)"]
+    V1{{"원단 입고 검사<br/>혼용률·TC"}}
+    S2["<b>② 패턴·샘플</b><br/>외주 패턴실<br/>3~4주 (가정)"]
+    V2{{"착용 테스트<br/>30명·시료 60벌"}}
+    V3{{"공인시험<br/>17건, M5 말"}}
+    S1 --> V1 --> S2 --> V2 --> V3
+  end
+  subgraph R2["봉제 → 출고 → 고객 (검증 1곳)"]
+    direction LR
+    S3["<b>③ 봉제 OEM</b><br/>국내 소규모 공장<br/>MOQ 300장<br/>양산 6~8주 (가정)"]
+    S4["<b>④ QC·포장</b><br/>자체 검수 + 3PL"]
+    V4{{"출고 전수 검수<br/>98%"}}
+    S5["<b>⑤ 고객</b><br/>펀딩·D2C·B2B"]
+    S3 --> S4 --> V4 --> S5
+  end
+  N["판매용 초도 600장: 사업비 외 재원(펀딩 선주문 대금 + 자기자금)으로 M7 중 발주 → M9 초 입고<br/>B2B는 초도 재고 + 로고 후가공"]
+  R1 --> R2
+  R2 -.-> N
+  class S1,S2,S3,S4 soft
+  class S5 primary
+  class V1,V2,V3,V4 cool
+  class N assume
+classDef our fill:#F26B38,stroke:#C4511F,color:#FFFFFF,font-weight:bold;
+classDef primary fill:#1B2A4A,stroke:#1B2A4A,color:#FFFFFF;
+classDef soft fill:#E9EDF3,stroke:#1B2A4A,color:#1B2A4A;
+classDef problem fill:#FBE9E5,stroke:#C8553D,color:#7A2E20;
+classDef cool fill:#DCEEF5,stroke:#2E86AB,color:#14506A;
+classDef eco fill:#E3F4EA,stroke:#3BAA6E,color:#1E5E3B;
+classDef neutral fill:#F2F4F7,stroke:#8C96A8,color:#4A5568;
+classDef assume fill:#FFFFFF,stroke:#8C96A8,stroke-dasharray:5 3,color:#4A5568;

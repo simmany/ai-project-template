@@ -1,0 +1,31 @@
+%%{init: {'flowchart': {'wrappingWidth': 260, 'nodeSpacing': 30, 'rankSpacing': 70}}}%%
+flowchart LR
+  Z(["<b>ZONEMAP</b><br/>기능성 트레이닝웨어"])
+  C1["<b>크라우드펀딩</b><br/>런칭·선주문 · M6"]
+  C2["<b>D2C 스마트스토어</b><br/>재구매·데이터 · M9"]
+  C3["<b>플랫폼 입점</b><br/>인지도·볼륨 · 2차년도"]
+  C4["<b>B2B 단체복</b><br/>안정 매출 · M9 파일럿"]
+  S1["20대 체육 전공자"]
+  S2["10대 체대 입시생<br/>(입시학원 경유)"]
+  S3["30대 동호인·러닝크루<br/>(중장기, SOM 미반영)"]
+  P["초도 생산 600장<br/>(사업비 외 재원)"]
+  Z --> C1 & C2 & C3 & C4
+  C1 --> S1
+  C2 --> S1
+  C3 --> S1
+  C4 --> S2
+  C4 -.->|"가정"| S3
+  C1 ==>|"선주문 대금"| P
+  class Z our
+  class C1,C2,C3,C4 primary
+  class S1,S2 cool
+  class S3 assume
+  class P eco
+classDef our fill:#F26B38,stroke:#C4511F,color:#FFFFFF,font-weight:bold;
+classDef primary fill:#1B2A4A,stroke:#1B2A4A,color:#FFFFFF;
+classDef soft fill:#E9EDF3,stroke:#1B2A4A,color:#1B2A4A;
+classDef problem fill:#FBE9E5,stroke:#C8553D,color:#7A2E20;
+classDef cool fill:#DCEEF5,stroke:#2E86AB,color:#14506A;
+classDef eco fill:#E3F4EA,stroke:#3BAA6E,color:#1E5E3B;
+classDef neutral fill:#F2F4F7,stroke:#8C96A8,color:#4A5568;
+classDef assume fill:#FFFFFF,stroke:#8C96A8,stroke-dasharray:5 3,color:#4A5568;

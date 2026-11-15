@@ -1,0 +1,50 @@
+[
+  {
+    "id": "diagram-problem-tree",
+    "type": "diagram",
+    "path": "output/01_사업계획서_초안/assets/diagrams/diagram_problem-tree_v1e.png",
+    "caption": "4축 불편(가설, M2 설문으로 확인)의 원인은 설계 정보 부재와 근거 미공개이며, 중가대·전공자 데이터 존 설계·수치 공개의 결합으로 답함",
+    "source": "집필가 작성, 근거는 본문 2.1.1",
+    "width": "70%"
+  },
+  {
+    "id": "diagram-tam-sam-som",
+    "type": "diagram",
+    "path": "output/01_사업계획서_초안/assets/diagrams/diagram_tam-sam-som_v1.png",
+    "caption": "TAM 7.1조(국내 스포츠웨어) → SAM 약 1조(국내 애슬레저) → 초기 거점 5.6만 명(4년제 체육 계열 재적학생) → SOM 5억 원(3년차)",
+    "source": "TAM 한국섬유산업연합회 2022 보도 인용·SAM 패션비즈 인용(모두 [확인 필요])·거점 교육부 대학알리미 2026·SOM 집필가 Bottom-up [가정]",
+    "width": "70%"
+  },
+  {
+    "id": "diagram-supply-chain",
+    "type": "diagram",
+    "path": "output/01_사업계획서_초안/assets/diagrams/diagram_supply-chain_v1f.png",
+    "caption": "원단부터 고객까지 5단계에 검증 지점 4곳을 두고, 판매용 초도 600장은 펀딩 선주문 뒤 M7 중 발주해 M9 초 입고",
+    "source": "집필가 작성, 리드타임·MOQ는 [가정]",
+    "width": "90%"
+  },
+  {
+    "id": "diagram-revenue-flow",
+    "type": "diagram",
+    "path": "output/01_사업계획서_초안/assets/diagrams/diagram_revenue-flow_v1b.png",
+    "caption": "4개 채널(펀딩·D2C·플랫폼·B2B 단체복)이 서로 다른 고객 세그먼트와 역할을 맡고, 펀딩 선주문 대금은 사업비 외 재원으로 초도 생산에 쓰임",
+    "source": "집필가 작성, 수수료·공헌이익은 표 4-1",
+    "width": "90%"
+  },
+  {
+    "id": "diagram-entry-funnel",
+    "type": "diagram",
+    "path": "output/01_사업계획서_초안/assets/diagrams/diagram_entry-funnel_v1b.png",
+    "caption": "학과·러닝크루 시딩 → 테스트단 → 펀딩 → 스토어·B2B → 재구매의 5단계와 단계별 KPI, 협약기간 소비자 주문 330건·매출 약 2,300만 원(공급가)",
+    "source": "집필가 작성, KPI는 전부 [가정]",
+    "width": "90%"
+  },
+  {
+    "id": "diagram-gantt",
+    "type": "diagram",
+    "path": "output/01_사업계획서_초안/assets/diagrams/diagram_gantt_v1b.png",
+    "caption": "협약기간 10개월 일정 — 성적서 M5 말, 펀딩 종료 M7 초, 초도 입고 M9 초의 세 고정점 [확인 필요: 협약기간]",
+    "source": "집필가 작성",
+    "width": "90%"
+  }
+]

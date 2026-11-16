@@ -1,6 +1,6 @@
 # 교재와 실습 가이드의 라이선스
 
-이 폴더(`docs/`)의 교재 HTML 3편과 실습 가이드(`practice-guide.html`)는 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스(CC BY 4.0)로 공개합니다. 저장소의 템플릿 폴더 `ai-project-template_v1.4/`는 이 라이선스가 아니라 MIT 라이선스를 따릅니다(저장소 맨 위의 `LICENSE`).
+이 폴더(`docs/`)의 교재 HTML 3편과 실습 가이드(`practice-guide.html`)는 크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스(CC BY 4.0)로 공개합니다. 저장소의 템플릿 폴더 `ai-project-template_v1.5/`는 이 라이선스가 아니라 MIT 라이선스를 따릅니다(저장소 맨 위의 `LICENSE`).
 
 - 저작권자: Su-Ho Yoo
 - 라이선스 요약(공식): https://creativecommons.org/licenses/by/4.0/deed.ko

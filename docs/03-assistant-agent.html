@@ -297,7 +297,7 @@ pre{margin:1.25rem 0 1.5rem;padding:1rem 1.15rem;background:var(--surface);borde
   </figure>
 
   <h3>알릴 것이 없으면 조용히 끝냅니다</h3>
-  <p>30분마다 깨어나는 비서가 그때마다 “변동 없습니다”라고 보내면, 곧 알림을 꺼 버리게 됩니다. 그래서 시작 조건에는 조용히 끝내는 장치가 짝으로 붙습니다. 깨어나서 살펴본 뒤 알릴 것이 있을 때만 사람에게 말합니다. OpenClaw와 Hermes의 문서에 이 장치가 나와 있습니다. 알릴 것이 없을 때 에이전트가 정해진 표시로 답하면, 그 답은 사용자에게 전달되지 않습니다(<a href="https://docs.openclaw.ai/ko/gateway/heartbeat">OpenClaw</a>, <a href="https://hermes-agent.nousresearch.com/docs/user-guide/features/cron">Hermes</a>).</p>
+  <p>30분마다 깨어나는 비서가 그때마다 “변동 없습니다”라고 보내면, 곧 알림을 꺼 버리게 됩니다. 그래서 시작 조건에는 조용히 끝내는 장치가 짝으로 붙습니다. 깨어나서 살펴본 뒤 알릴 것이 있을 때만 사람에게 말합니다. OpenClaw와 Hermes의 문서에 이 장치가 나와 있습니다. 알릴 것이 없을 때 에이전트가 정해진 표시로 답하면, 그 답은 사용자에게 전달되지 않습니다(<a href="https://docs.openclaw.ai/cli/cron">OpenClaw</a>, <a href="https://hermes-agent.nousresearch.com/docs/user-guide/features/cron">Hermes</a>).</p>
 
   <h3>조건을 고르는 기준</h3>
   <ul>
@@ -383,7 +383,7 @@ pre{margin:1.25rem 0 1.5rem;padding:1rem 1.15rem;background:var(--surface);borde
   <div class="sec-head"><span class="sec-no">6</span><h2 id="h-bridge">맡긴 일을 비서가 챙기게 하기</h2></div>
   <p>1편의 제안서로 돌아갑니다. 작업 에이전트에게 프로젝트 폴더를 주고 제안서 초안을 맡겼습니다. 이제 비서 에이전트에게 그 일을 챙기게 하려고 합니다. 초안이 나오면 알려 주고, 막히면 내 결정을 받아 가고, 최종본은 내 승인을 받은 뒤 전달하는 역할입니다.</p>
   <p>걸리는 점이 하나 있습니다. 둘의 기억이 다른 곳에 있습니다. 작업 에이전트의 맥락은 프로젝트 폴더에 있고, 비서 에이전트의 맥락은 자기 장기 메모리에 있습니다. 2장에서 본 대로 그 메모는 요약이라 빠지는 것이 있습니다.</p>
-  <p>그래서 원칙을 하나 세웁니다. 일의 상태는 폴더에 적어 두고, 비서 에이전트는 깨어날 때마다 폴더를 읽습니다. 비서의 기억에는 폴더가 어디에 있는지, 언제 확인하기로 했는지, 내가 어떤 보고를 좋아하는지만 남깁니다.</p>
+  <p>그래서 원칙을 하나 세웁니다. 일의 상태는 폴더에 적어 두고, 비서 에이전트는 깨어날 때마다 폴더를 읽습니다. 비서의 기억에는 약속과 내 사정만 남깁니다. 약속은 이름, 맡긴 폴더, 그 폴더에서 따를 파일입니다. 내 사정은 언제 확인하기로 했는지, 내가 어떤 보고를 좋아하는지입니다.</p>
   <p class="proposal">이 장의 연결 방법은 이 자료가 제안하는 구성입니다. 제품이 정해 둔 절차가 아니라, 앞에서 확인한 사실을 바탕으로 짠 것입니다.</p>
 
   <figure class="fig">
@@ -395,12 +395,13 @@ pre{margin:1.25rem 0 1.5rem;padding:1rem 1.15rem;background:var(--surface);borde
     <table class="wide">
       <thead><tr><th>폴더</th><th>들어 있는 것</th><th>작업 에이전트</th><th>비서 에이전트</th></tr></thead>
       <tbody>
-        <tr><th>AGENTS.md</th><td>이 프로젝트에서 일하는 법</td><td>시작할 때 읽는다</td><td>깨어날 때 읽는다. 비서용 안내를 따로 적어 둔다</td></tr>
+        <tr><th>AGENTS.md</th><td>작업 에이전트가 이 프로젝트에서 일하는 법</td><td>시작할 때 읽는다</td><td>따르지 않는다. 비서용 규칙은 아래 파일에 따로 있다</td></tr>
+        <tr><th>PERSONAL-AGENT.md</th><td>비서 에이전트가 이 폴더에서 해도 되는 일. 사람이 비서의 이름과 권한을 등록한다</td><td>읽지 않는다</td><td>폴더에 들어오면 규칙부터 확인한다. 자기 이름이 등록돼 있을 때만 따른다</td></tr>
         <tr><th>기초자료<br>input/</th><td>사람이 준 자료</td><td>읽는다</td><td>읽기만 한다</td></tr>
         <tr><th>작업규칙<br>rules/</th><td>기준과 금지 사항</td><td>읽는다</td><td>읽는다. 보내기, 지출, 삭제는 사람에게 묻는다는 규칙을 여기에 둔다</td></tr>
-        <tr><th>작업흐름<br>workflow/</th><td>요청 기록과 그 뒤에 붙는 결과 기록</td><td>요청을 읽고 결과를 뒤에 적는다</td><td>사람의 말을 요청 파일로 적어 넣는다. 결과 기록을 읽어 보고한다</td></tr>
+        <tr><th>작업흐름<br>workflow/</th><td>요청 기록과 그 뒤에 붙는 응답 기록</td><td>요청을 읽고 응답을 뒤에 적는다</td><td>맡기기 권한이면, 사람이 승인한 요청 문서를 새 파일로 적어 넣는다. 응답 기록을 읽어 알린다</td></tr>
         <tr><th>프로그램소스(선택)<br>codebase/</th><td>코드</td><td>읽고 쓴다</td><td>손대지 않는다</td></tr>
-        <tr><th>작업노트<br>_workspace/memory/</th><td>지금 상태. 진행 상황, 주요 결정과 이유, 다음 할 일, 다음 확인 시점</td><td>작업이 끝날 때마다 고쳐 쓴다</td><td>깨어나면 가장 먼저 읽는다</td></tr>
+        <tr><th>작업노트<br>_workspace/memory/</th><td>지금 상태. 진행 상황, 주요 결정과 이유, 다음 할 일</td><td>작업이 끝날 때마다 고쳐 쓴다</td><td>일의 상태는 여기서 가장 먼저 읽는다</td></tr>
         <tr><th>초안<br>_workspace/drafts/</th><td>검토 전 결과</td><td>쓴다</td><td>검토할 초안이 생겼다고 사람에게 알린다</td></tr>
         <tr><th>결과물<br>output/</th><td>사람이 가져다 쓸 최종본</td><td>쓴다</td><td>사람의 승인을 받은 뒤 전달한다</td></tr>
       </tbody>
@@ -408,25 +409,25 @@ pre{margin:1.25rem 0 1.5rem;padding:1rem 1.15rem;background:var(--surface);borde
   </div>
 
   <h3>작업노트가 다리입니다</h3>
-  <p>스케줄이나 이벤트로 깨어난 비서 에이전트는 지난 대화를 들고 있지 않은 경우가 많습니다. Hermes의 예약 작업은 이전 실행의 기억 없이 매번 새로 시작합니다(<a href="https://hermes-agent.nousresearch.com/docs/user-guide/features/cron">Hermes</a>). dot이 만든 작업도 그 일에 필요한 지시와 맥락만 넘겨받습니다(<a href="https://learn.chatgpt.com/docs/dots/tasks-and-memory">OpenAI</a>). 깨어난 비서가 어제 어디까지 했는지 알려면 그 내용이 파일에 적혀 있어야 합니다. 그 파일이 작업노트입니다.</p>
+  <p>스케줄이나 이벤트로 깨어난 비서 에이전트는 지난 대화를 들고 있지 않은 경우가 많습니다. Hermes의 예약 작업은 이전 실행의 대화 없이 매번 새로 시작합니다(<a href="https://hermes-agent.nousresearch.com/docs/user-guide/features/cron">Hermes</a>). dot이 만든 작업도 그 일에 필요한 지시와 맥락만 넘겨받습니다(<a href="https://learn.chatgpt.com/docs/dots/tasks-and-memory">OpenAI</a>). 깨어난 비서가 어제 어디까지 했는지 알려면 그 내용이 파일에 적혀 있어야 합니다. 그 파일이 작업노트입니다.</p>
 <pre aria-label="작업노트 예시"># 작업노트 (_workspace/memory/status.md)
 ## 진행 상황
 - 제안서 초안 1차 완료 (output/제안서_v01.md)
 ## 주요 결정과 이유
 - 3일 과정으로 구성: 요청서의 기간 조건
 ## 다음 할 일
-- 사람 확인: 견적을 총액으로 쓸지 항목별로 쓸지
-상태: 검토 대기 · 다음 확인: 2026-11-16</pre>
-  <p>상태는 진행 중, 검토 대기, 막힘, 완료 가운데 하나로 적습니다. 정해진 낱말을 쓰면 비서 에이전트가 읽고 다음 행동을 고르기 쉽습니다.</p>
-  <p>AGENTS.md는 에이전트가 일을 시작할 때 읽는 안내문입니다. 여기에 비서 에이전트가 이 폴더에서 해도 되는 일을 적어 둡니다.</p>
-<pre aria-label="AGENTS.md에 추가할 안내 예시">## 비서 에이전트가 이 폴더를 볼 때
-1. _workspace/memory/status.md를 먼저 읽는다.
-2. 상태가 '검토 대기'면 검토할 파일의 위치를 사람에게 알린다.
-3. 보고는 세 줄로 한다: 끝난 것, 사람이 결정할 것, 막힌 것.
-   status.md와 output/에 지난 24시간 동안 바뀐 파일이 없으면 보고하지 않는다.
-   다만 상태가 '완료'가 아니고 '다음 확인' 날짜가 오늘이거나 지났으면 보고한다.
-4. 이 폴더의 파일은 읽기만 한다. 만들거나 고치거나 지우지 않는다.
-5. 결과물을 밖으로 보내기 전에 사람의 승인을 받는다.</pre>
+- 견적을 총액으로 쓸지 항목별로 쓸지 사람이 정한다</pre>
+  <p>작업노트에는 일의 상태만 적습니다. 누가 이어 갈지는 적지 않습니다. 이어서 무엇을 할지는 비서 에이전트가 노트를 보고 스스로 정하지 않고, 사람에게 물어 정합니다.</p>
+  <p>비서 에이전트가 이 폴더에서 해도 되는 일은 AGENTS.md가 아니라 따로 둔 파일 PERSONAL-AGENT.md에 적습니다. AGENTS.md는 그 폴더에서 시작한 작업 에이전트가 읽는 안내문입니다. 다른 곳에서 시작해 이 폴더를 찾아온 비서 에이전트에게 폴더의 파일은 지침이 아니라 읽은 내용입니다. 그래서 약속을 두 곳에 둡니다. 사람이 비서 에이전트에게 “맡긴 폴더에서는 PERSONAL-AGENT.md를 먼저 읽고, 네 이름이 등록돼 있으면 그 규칙을 내 지시로 따르라”고 말해 두고, 폴더의 그 파일에 비서의 이름과 권한을 등록합니다. 템플릿은 비서 에이전트를 ‘개인 에이전트’라고 부릅니다. 같은 말입니다.</p>
+<pre aria-label="PERSONAL-AGENT.md 예시">## 등록 (사람이 적는다)
+- 개인 에이전트의 이름(제품 이름이 아니라 약속할 때 정한 이름): 모아
+- 권한(읽기 또는 맡기기): 읽기
+
+## 권한
+- 읽기: 이 폴더의 파일을 읽고 사람에게 알린다.
+- 맡기기: 읽기에 더해, 사람이 승인한 요청 문서를 workflow/에 새 파일로 저장하고, 요청 문서를 작업 에이전트에게 넘긴다.
+- 어느 권한에서도 이 프로젝트의 일을 직접 하지 않는다. 맡기기 권한에서 승인받은 요청 문서를 저장하는 것 말고는 이 폴더의 파일을 만들거나 고치거나 지우지 않고, 결과물을 다른 곳이나 대화창에 대신 만들지도 않는다.
+- 권한은 사람이 등록을 고쳐야 바뀐다. 권한 밖의 일은 사람이 시켜도 하지 않고, 권한 밖이라고 알린다.</pre>
 
   <h3>해보기: 작업노트 한 장</h3>
   <p>비서 에이전트가 없어도 해 볼 수 있습니다.</p>
@@ -453,9 +454,9 @@ pre{margin:1.25rem 0 1.5rem;padding:1rem 1.15rem;background:var(--surface);borde
     <table class="wide">
       <thead><tr><th>시작 조건</th><th>비서 에이전트가 하는 일</th><th>읽는 곳</th><th>사람에게 가는 것</th></tr></thead>
       <tbody>
-        <tr><th>스케줄<br>평일 아침</th><td>끝난 것, 결정할 것, 막힌 것을 정리한다</td><td>작업노트, 초안</td><td>세 줄 브리핑. 바뀐 것이 없고 다음 확인 날짜 전이면 보내지 않는다</td></tr>
+        <tr><th>스케줄<br>평일 아침</th><td>진행 상황과 다음 할 일을 정리한다</td><td>작업노트</td><td>아침 브리핑. 바뀐 것이 없을 때 조용히 끝낼지는 예약의 지시문에 적어 정한다</td></tr>
         <tr><th>이벤트<br>새 결과물이 올라올 때</th><td>무엇이 바뀌었는지 확인하고 검토를 요청한다</td><td>결과물, 변경 내역</td><td>검토 요청과 해당 파일</td></tr>
-        <tr><th>셀프 웨이크<br>작업을 맡긴 뒤</th><td>정한 시점에 상태를 다시 본다. 완료면 보고하고, 막혔으면 질문을 전하고, 진행 중이면 다음 시점을 다시 잡는다</td><td>작업노트의 상태</td><td>완료 보고나 결정 요청</td></tr>
+        <tr><th>셀프 웨이크<br>작업을 맡긴 뒤</th><td>정한 시점에 작업노트를 다시 본다. 끝났으면 알리고, 막혔으면 질문을 전하고, 아직이면 다음 시점을 다시 잡는다</td><td>작업노트</td><td>완료 알림이나 결정 요청</td></tr>
       </tbody>
     </table>
   </div>
@@ -463,9 +464,9 @@ pre{margin:1.25rem 0 1.5rem;padding:1rem 1.15rem;background:var(--surface);borde
   <h3>조금씩 여는 순서</h3>
   <p>처음부터 다 열지 않습니다. 읽기만 하는 데서 시작해 하나씩 넓힙니다.</p>
   <ol>
-    <li><strong>읽기 전용으로 시작합니다.</strong> 작업노트와 결과물만 읽고 브리핑하게 합니다.</li>
-    <li><strong>요청 적기를 허용합니다.</strong> 사람의 말을 작업흐름에 요청 파일로 남기게 합니다.</li>
+    <li><strong>읽기로 시작합니다.</strong> 작업노트와 결과물만 읽고 알리게 합니다.</li>
     <li><strong>시작 조건을 하나 붙입니다.</strong> 아침 스케줄부터 시작하고 이벤트는 나중에 더합니다.</li>
+    <li><strong>맡기기를 엽니다.</strong> 내가 시킨 일을 요청 문서로 써서 보여 주게 하고, 승인한 문서만 작업흐름에 저장해 작업 에이전트에게 넘기게 합니다.</li>
     <li><strong>승인 규칙을 정합니다.</strong> 결과물을 밖으로 보내는 일, 돈이 드는 일, 삭제는 사람에게 묻게 합니다.</li>
     <li><strong>매주 활동 기록을 봅니다.</strong> 필요한 결과물이 나왔는지, 정한 범위 안에서 움직였는지 확인합니다.</li>
   </ol>
@@ -487,7 +488,7 @@ pre{margin:1.25rem 0 1.5rem;padding:1rem 1.15rem;background:var(--surface);borde
         <tr><th>Meta Muse<br>Meta</th><td>앱이나 WhatsApp에서 사람에게 메시지 보내듯 대화</td><td>반복 작업<span class="src">＊</span>. 일이 바뀌거나 승인이 필요하면 돌아온다. 묻지 않아도 제안한다</td><td>사용자마다 전용 클라우드 컴퓨터. 브라우저를 넘겨받을 수 있다<span class="src">＊</span></td><td>미국, 캐나다, 멕시코, 일본, 싱가포르<span class="src">＊</span>. 한국 출시 발표는 없다. 무료(한도 있음), 월 20달러, 100달러<span class="src">＊</span></td></tr>
         <tr><th>Grok Bot<span class="src">＊</span><br>xAI</th><td>이름 붙인 Bot마다 대화가 따로 있다</td><td>정해 둔 루틴. Slack, GitHub, 메일 등에서 온 이벤트</td><td>계정마다 클라우드 컴퓨터 한 대를 모든 Bot이 함께 쓴다. 비밀번호와 결제 때는 사람에게 넘긴다</td><td>X 구독(Premium, Super, Ultra)과 유료 Cursor 요금제. 국가 제한 문구는 찾지 못했다</td></tr>
         <tr><th>Instinct<span class="src">＊</span></th><td>문자와 전화. 앱이 없다</td><td>공개 문서가 없다. 먼저 문자를 보내고 끊긴 일을 다시 챙긴다는 회사 설명만 있다</td><td>자기 전화번호와 늘 켜진 클라우드 컴퓨터</td><td>초대제. 현재 무료이고 가격은 공개되지 않았다</td></tr>
-        <tr><th>OpenClaw · Hermes<br>오픈소스</th><td>메신저. Hermes는 터미널에서도</td><td>OpenClaw는 기본 30분마다 살피는 하트비트와 예약. Hermes는 예약과 웹훅</td><td>내가 켜 둔 PC나 서버</td><td>누구나 설치할 수 있다. 소프트웨어는 무료이고 연결한 모델의 요금을 따로 낸다. 직접 설치하고 설정해야 한다</td></tr>
+        <tr><th>OpenClaw · Hermes<br>오픈소스</th><td>메신저. Hermes는 터미널에서도</td><td>OpenClaw는 자동화 작업(예약). 설정하면 30분마다 도는 점검 작업이 하나 생긴다. Hermes는 예약과 웹훅</td><td>내가 켜 둔 PC나 서버</td><td>누구나 설치할 수 있다. 소프트웨어는 무료이고 연결한 모델의 요금을 따로 낸다. 직접 설치하고 설정해야 한다</td></tr>
       </tbody>
     </table>
   </div>
@@ -546,19 +547,20 @@ pre{margin:1.25rem 0 1.5rem;padding:1rem 1.15rem;background:var(--surface);borde
     <div><dt>장기 메모리</dt><dd>에이전트가 대화와 따로 적어 두는 기억. 요약이라 빠지는 것이 있습니다.</dd></div>
     <div><dt>압축</dt><dd>길어진 대화를 줄여서 정리하는 일. 영어로는 컴팩션이라고 합니다.</dd></div>
     <div><dt>시작 조건</dt><dd>에이전트를 깨워 일을 시작하게 하는 것. 사람의 메시지, 스케줄, 이벤트, 셀프 웨이크가 있습니다.</dd></div>
-    <div><dt>하트비트</dt><dd>정해진 간격으로 깨어나 살피는 방식. OpenClaw에서 쓰는 이름입니다.</dd></div>
+    <div><dt>하트비트</dt><dd>정해진 간격으로 깨어나 살피는 방식. OpenClaw가 쓰던 이름이고, 지금은 자동화 작업으로 바뀌었습니다.</dd></div>
     <div><dt>웹훅</dt><dd>다른 서비스가 일이 생겼다고 알려 오는 신호 통로. 이벤트 시작 조건에 쓰입니다.</dd></div>
     <div><dt>커넥터</dt><dd>메일, 캘린더 같은 앱을 에이전트에 연결하는 장치.</dd></div>
     <div><dt>넘겨받기</dt><dd>에이전트가 쓰던 화면을 사람이 직접 조작하는 것. 끝나면 에이전트에게 돌려줍니다.</dd></div>
-    <div><dt>AGENTS.md</dt><dd>에이전트가 프로젝트에서 일을 시작할 때 읽는 안내문 파일.</dd></div>
-    <div><dt>작업노트</dt><dd>일의 지금 상태를 적어 두는 파일. 진행 상황, 주요 결정과 이유, 다음 할 일, 다음 확인 시점을 담습니다.</dd></div>
+    <div><dt>AGENTS.md</dt><dd>작업 에이전트가 프로젝트에서 일을 시작할 때 읽는 안내문 파일.</dd></div>
+    <div><dt>PERSONAL-AGENT.md</dt><dd>비서 에이전트가 프로젝트 폴더에서 해도 되는 일을 적은 파일. 사람이 비서의 이름과 권한(읽기, 맡기기)을 등록합니다.</dd></div>
+    <div><dt>작업노트</dt><dd>일의 지금 상태를 적어 두는 파일. 진행 상황, 주요 결정과 이유, 다음 할 일을 담습니다.</dd></div>
     <div><dt>원격 저장소</dt><dd>인터넷에 올려 둔 폴더. 클라우드 드라이브나 Git 저장소가 여기에 듭니다.</dd></div>
   </dl>
 </section>
 
 <footer>
   <h2>출처</h2>
-  <p>제품에 관한 내용은 2026년 11월 15일에 아래 자료로 확인했습니다. <span class="src">＊</span> 표시는 회사 문서를 인용한 글이나 보도입니다. 제품은 자주 바뀌니 쓰기 전에 다시 확인하세요.</p>
+  <p>제품에 관한 내용은 2026년 11월 15일에 아래 자료로 확인했습니다. <span class="src">＊</span> 표시는 회사 문서를 인용한 글이나 보도입니다. 제품은 자주 바뀌니 쓰기 전에 다시 확인하세요. OpenClaw의 시작 조건은 11월 17일에 다시 확인했습니다.</p>
   <ol>
     <li><a href="https://claude.com/resources/articles/claude-duet">Anthropic, Introducing Claude Duet (2026년 10월 21일)</a></li>
     <li><a href="https://support.claude.com/en/articles/17631495-get-started-with-claude-duet">Anthropic 도움말, Get started with Claude Duet</a></li>
@@ -574,7 +576,7 @@ pre{margin:1.25rem 0 1.5rem;padding:1rem 1.15rem;background:var(--surface);borde
     <li><a href="https://www.vellum.ai/blog/official-instinct-breakdown">Vellum, Official Instinct Breakdown (8월 20일)</a> <span class="src">＊</span> 경쟁사가 쓴 글이라 그 점을 감안했습니다</li>
     <li><a href="https://techcrunch.com/2026/09/28/viral-ai-agent-instinct-raises-1b-series-c-at-a-10b-valuation">TechCrunch, Instinct 시리즈 C (9월 28일)</a> <span class="src">＊</span></li>
     <li><a href="https://techcrunch.com/2026/10/06/hark-releases-an-ai-personal-assistant-with-a-focus-on-privacy/">TechCrunch, Hark Pro 출시 (10월 6일)</a> <span class="src">＊</span></li>
-    <li><a href="https://docs.openclaw.ai/ko/gateway/heartbeat">OpenClaw 문서, Heartbeat</a></li>
+    <li><a href="https://docs.openclaw.ai/cli/cron">OpenClaw 문서, Heartbeat와 CLI cron(automations)</a></li>
     <li><a href="https://docs.openclaw.ai/concepts/memory.md">OpenClaw 문서, Memory overview</a></li>
     <li><a href="https://hermes-agent.nousresearch.com/docs/user-guide/features/cron">Hermes Agent 문서, Scheduled Tasks (Cron)</a></li>
   </ol>

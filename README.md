@@ -1,11 +1,15 @@
 # ai-project-template
 
-AI 에이전트에게 일을 맡길 때 쓰는 작업 폴더입니다. 에이전트는 대화만 하는 챗봇과 달리, 내 폴더의 파일을 읽고 만들면서 일을 해 주는 AI입니다. 이 폴더에는 일하는 법(`AGENTS.md`)과 다섯 개의 자리가 들어 있어서, 에이전트에게 폴더를 열어 주면 같은 규칙으로 일하고 기록을 남깁니다. 개발자가 아니어도 쓸 수 있습니다.
+AI 에이전트에게 일을 맡길 때 쓰는 작업 폴더입니다. 에이전트는 대화만 하는 챗봇과 달리, 내 폴더의 파일을 읽고 쓰면서, 일을 해 주는 AI입니다. 이 폴더에는 일하는 법(`AGENTS.md`)과, 규칙, 자료, 작업 흐름, 결과물, 작업 공간을 나눠 담는 다섯 개의 폴더가 들어 있어서, 에이전트에게 폴더를 열어 주면 같은 규칙으로 일하고 기록을 남깁니다. 개발자가 아니어도 쓸 수 있습니다.
 
 ## 시작하기
 
-1. 받기: [저장소](https://github.com/simmany/ai-project-template) 첫 화면의 초록색 **Code** 버튼을 누르고 **Download ZIP**을 고릅니다([바로 받기](https://github.com/simmany/ai-project-template/archive/refs/heads/main.zip)). 압축을 풀고, `AGENTS.md`가 바로 보이는 폴더의 이름을 내 프로젝트 이름으로 바꿉니다. `git clone`으로 받아도 내용은 같습니다.
-2. 열기: ChatGPT Work, Claude, Codex, Claude Code 가운데 쓰는 제품에서 이 폴더를 엽니다. 방법은 [1단계](help/step1-open-folder.md)에 있습니다.
+1. 받기: [저장소](https://github.com/simmany/ai-project-template) 첫 화면의 초록색 **Code** 버튼을 누르고 **Download ZIP**을 고릅니다([바로 받기](https://github.com/simmany/ai-project-template/archive/refs/heads/main.zip)). 압축을 풀고, `AGENTS.md`가 바로 보이는 폴더의 이름을 내 프로젝트 이름으로 바꿉니다.
+   - Git이 설치되어 있다면 터미널에서 아래 명령으로 받아도 됩니다. `git clone`은 저장소를 내 컴퓨터로 복사해 오는 명령이고, 명령을 입력한 위치에 `ai-project-template` 폴더가 생깁니다. 들어 있는 파일은 ZIP과 같습니다. 받은 뒤에는 이 폴더의 이름을 내 프로젝트 이름으로 바꿉니다.
+     ```
+     git clone https://github.com/simmany/ai-project-template
+     ```
+2. 열기: ChatGPT Work, Claude, Codex, Claude Code 가운데 쓰는 AI 에이전트에서 이 폴더를 엽니다. 방법은 [1단계](help/step1-open-folder.md)에 있습니다.
 3. 맡기기: 아래처럼 보냅니다. 괄호 자리에 맡길 일을 적습니다.
 
 ```
@@ -43,7 +47,7 @@ AGENTS.md를 먼저 읽고, (맡길 일)을 진행해줘.
 ├── PERSONAL-AGENT.md    비서 에이전트용 규칙 (7단계)
 ├── rules/               지켜야 할 규칙. 내가 정합니다
 ├── input/               참고 자료. 내가 넣습니다
-├── workflow/            요청과 응답의 기록
+├── workflow/            작업 흐름. 요청과 응답의 기록
 ├── output/              결과물. AI가 만듭니다
 ├── _workspace/          AI의 작업 공간과 기록
 ├── help/                단계별 안내
@@ -55,6 +59,6 @@ AGENTS.md를 먼저 읽고, (맡길 일)을 진행해줘.
 
 ## 버전과 라이선스
 
-- 지금 버전은 v1.7입니다. 바뀐 내용은 [릴리스](https://github.com/simmany/ai-project-template/releases)에 있습니다.
+- 지금 버전은 v1.7.1입니다. 바뀐 내용은 [릴리스](https://github.com/simmany/ai-project-template/releases)에 있습니다.
 - 예전 폴더 구성으로 만든 샘플 프로젝트는 [v1.6 시점의 저장소](https://github.com/simmany/ai-project-template/tree/v1.6/samples)에서 볼 수 있습니다.
 - MIT 라이선스입니다. 전문은 [LICENSE](LICENSE)에 있습니다. 저작권자: Su-Ho Yoo

@@ -22,7 +22,7 @@ AGENTS.md를 먼저 읽고, (맡길 일)을 진행해줘.
 
 ## 단계별 안내
 
-처음이라면 `help/` 폴더의 안내를 1단계부터 따라 합니다. '교육 제안서'라는 예제로 해 보는 실습이고, 한 번에 다 하지 않아도 됩니다. 2단계까지만 해도 쓸 수 있습니다. 7단계는 개인·비서 에이전트를 쓰는 사람만 합니다.
+처음이라면 `help/` 폴더의 안내를 1단계부터 따라 합니다. '교육 제안서'라는 예제로 해 보는 실습이고, 한 번에 다 하지 않아도 됩니다. 2단계까지만 해도 쓸 수 있습니다. 8단계는 개인·비서 에이전트를 쓰는 사람만 합니다.
 
 | 단계 | 하는 일 |
 | --- | --- |
@@ -31,8 +31,9 @@ AGENTS.md를 먼저 읽고, (맡길 일)을 진행해줘.
 | [3단계](help/step3_input.md) | 참고 자료를 `input/`에 넣기 |
 | [4단계](help/step4_rules.md) | 지켜야 할 규칙을 `rules/`에 두기 |
 | [5단계](help/step5_workflow.md) | `workflow/`에서 업무요청서 보고 쓰기 |
-| [6단계](help/step6_context-memory.md) | Context와 Memory 관리 |
-| [7단계](help/step7_personal-agent.md) | 개인·비서 에이전트가 이 폴더를 읽게 하기 |
+| [6단계](help/step6_coding.md) | 코딩 요청 해 보기 |
+| [7단계](help/step7_context-memory.md) | Context와 Memory 관리 |
+| [8단계](help/step8_personal-agent.md) | 개인·비서 에이전트가 이 폴더를 읽게 하기 |
 
 안내는 GitHub 화면(github.com/simmany/ai-project-template)에서 읽으면 표와 링크가 제대로 보입니다. 받은 폴더의 파일을 메모장(Windows)이나 텍스트 편집기(Mac)로 열어도 내용은 같습니다. 이름이 `.md`로 끝나는 파일은 글자만 든 문서이고, `#`은 제목, `-`는 목록을 나타내는 표시입니다.
 
@@ -44,7 +45,7 @@ AGENTS.md를 먼저 읽고, (맡길 일)을 진행해줘.
 내 프로젝트/
 ├── AGENTS.md            일하는 법. 에이전트가 읽습니다
 ├── CLAUDE.md            Claude Code가 AGENTS.md를 읽게 하는 파일
-├── PERSONAL-AGENT.md    개인·비서 에이전트용 규칙 (7단계)
+├── PERSONAL-AGENT.md    개인·비서 에이전트용 규칙 (8단계)
 ├── rules/               지켜야 할 규칙. 내가 정합니다
 ├── input/               참고 자료. 내가 넣습니다
 ├── workflow/            작업 흐름. 요청과 처리 결과의 기록
@@ -55,10 +56,12 @@ AGENTS.md를 먼저 읽고, (맡길 일)을 진행해줘.
 └── LICENSE
 ```
 
+`rules/`에는 코딩 기본 기준 두 파일(`coding.md`, `coding-skeleton.md`)이 미리 들어 있습니다. 코드를 만들어 달라고 하면 에이전트가 이 기준을 따르고, 계속 쓰는 코드는 `codebase/` 폴더를 만들어 그 안에 둡니다(6단계).
+
 `help/`, `README.md`, `LICENSE`는 템플릿의 안내와 라이선스입니다. 익숙해지면 지워도 됩니다. 이 폴더를 다른 사람에게 다시 나눠 줄 때는 `LICENSE`를 남겨 둡니다.
 
 ## 버전과 라이선스
 
-- 지금 버전은 v1.8입니다. 바뀐 내용은 [릴리스](https://github.com/simmany/ai-project-template/releases)에 있습니다.
+- 지금 버전은 v1.9입니다. 바뀐 내용은 [릴리스](https://github.com/simmany/ai-project-template/releases)에 있습니다.
 - 예전 폴더 구성으로 만든 샘플 프로젝트는 [v1.6 시점의 저장소](https://github.com/simmany/ai-project-template/tree/v1.6/samples)에서 볼 수 있습니다.
 - MIT 라이선스입니다. 전문은 [LICENSE](LICENSE)에 있습니다. 저작권자: Su-Ho Yoo

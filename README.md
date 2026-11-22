@@ -1,6 +1,6 @@
 # ai-project-template
 
-AI 에이전트에게 일을 맡길 때 쓰는 작업 폴더입니다. 에이전트는 대화만 하는 챗봇과 달리, 내 폴더의 파일을 읽고 쓰면서, 일을 해 주는 AI입니다. 이 폴더에는 일하는 법(`AGENTS.md`)과, 규칙, 자료, 작업 흐름, 결과물, AI의 워크스페이스를 나눠 담는 다섯 개의 폴더가 들어 있어서, 에이전트에게 폴더를 열어 주면 같은 규칙으로 일하고 기록을 남깁니다. 개발자가 아니어도 쓸 수 있습니다.
+AI 에이전트에게 일을 맡길 때 쓰는 작업 폴더입니다. 에이전트는 대화만 하는 챗봇과 달리, 내 폴더의 파일을 읽고 쓰면서, 일을 해 주는 AI입니다. 이 폴더에는 일하는 법(`AGENTS.md`)과, 규칙, 자료, 작업 흐름, 결과물, AI의 작업실을 나눠 담는 다섯 개의 폴더가 들어 있어서, 에이전트에게 폴더를 열어 주면 같은 규칙으로 일하고 기록을 남깁니다. 개발자가 아니어도 쓸 수 있습니다.
 
 ## 시작하기
 
@@ -9,16 +9,16 @@ AI 에이전트에게 일을 맡길 때 쓰는 작업 폴더입니다. 에이전
      ```
      git clone https://github.com/simmany/ai-project-template
      ```
-2. 열기: ChatGPT Work, Claude, Codex, Claude Code 가운데 쓰는 AI 에이전트에서 이 폴더를 엽니다. 방법은 [1단계](help/step1-open-folder.md)에 있습니다.
+2. 열기: ChatGPT Work, Claude Cowork, Codex, Claude Code 가운데 쓰는 AI 에이전트에서 이 폴더를 엽니다. 방법은 [1단계](help/step1_open-folder.md)에 있습니다.
 3. 맡기기: 아래처럼 보냅니다. 괄호 자리에 맡길 일을 적습니다.
 
 ```
 AGENTS.md를 먼저 읽고, (맡길 일)을 진행해줘.
 ```
 
-일이 끝나면 폴더를 봅니다. `workflow/`에 요청과 응답의 기록이, `output/`에 결과물이, `_workspace/memory/status.md`에 지금 상태가 남습니다.
+작업이 끝나면 폴더를 봅니다. `workflow/`에 요청과 처리 결과의 기록이, `output/`에 결과물이, `_workspace/memory/status.md`에 지금 상태가 남습니다.
 
-일 하나에 폴더 하나를 씁니다. 다른 일을 시작할 때는 폴더를 새로 받습니다.
+프로젝트 하나에 폴더 하나를 씁니다. 다른 프로젝트를 시작할 때는 폴더를 새로 받습니다.
 
 ## 단계별 안내
 
@@ -26,13 +26,13 @@ AGENTS.md를 먼저 읽고, (맡길 일)을 진행해줘.
 
 | 단계 | 하는 일 |
 | --- | --- |
-| [1단계](help/step1-open-folder.md) | 폴더를 에이전트에게 열어 주기 |
-| [2단계](help/step2-first-request.md) | 첫 요청 보내기 |
-| [3단계](help/step3-input.md) | 참고 자료를 `input/`에 넣기 |
-| [4단계](help/step4-rules.md) | 지켜야 할 규칙을 `rules/`에 두기 |
-| [5단계](help/step5-workflow.md) | `workflow/`에서 요청과 기록 보기 |
-| [6단계](help/step6-context-memory.md) | Context와 Memory 구분하기 |
-| [7단계](help/step7-personal-agent.md) | 개인·비서 에이전트가 이 폴더를 읽게 하기 |
+| [1단계](help/step1_open-folder.md) | 폴더를 에이전트에게 열어 주기 |
+| [2단계](help/step2_first-request.md) | 첫 요청 보내기 |
+| [3단계](help/step3_input.md) | 참고 자료를 `input/`에 넣기 |
+| [4단계](help/step4_rules.md) | 지켜야 할 규칙을 `rules/`에 두기 |
+| [5단계](help/step5_workflow.md) | `workflow/`에서 업무요청서 보고 쓰기 |
+| [6단계](help/step6_context-memory.md) | Context와 Memory 관리 |
+| [7단계](help/step7_personal-agent.md) | 개인·비서 에이전트가 이 폴더를 읽게 하기 |
 
 안내는 GitHub 화면(github.com/simmany/ai-project-template)에서 읽으면 표와 링크가 제대로 보입니다. 받은 폴더의 파일을 메모장(Windows)이나 텍스트 편집기(Mac)로 열어도 내용은 같습니다. 이름이 `.md`로 끝나는 파일은 글자만 든 문서이고, `#`은 제목, `-`는 목록을 나타내는 표시입니다.
 
@@ -47,9 +47,9 @@ AGENTS.md를 먼저 읽고, (맡길 일)을 진행해줘.
 ├── PERSONAL-AGENT.md    개인·비서 에이전트용 규칙 (7단계)
 ├── rules/               지켜야 할 규칙. 내가 정합니다
 ├── input/               참고 자료. 내가 넣습니다
-├── workflow/            작업 흐름. 요청과 응답의 기록
+├── workflow/            작업 흐름. 요청과 처리 결과의 기록
 ├── output/              결과물. AI가 만듭니다
-├── _workspace/          AI의 워크스페이스. 중간 산출물과 기록
+├── _workspace/          AI의 작업실. 중간 산출물과 기록
 ├── help/                단계별 안내
 ├── README.md            이 파일
 └── LICENSE
@@ -59,6 +59,6 @@ AGENTS.md를 먼저 읽고, (맡길 일)을 진행해줘.
 
 ## 버전과 라이선스
 
-- 지금 버전은 v1.7.2입니다. 바뀐 내용은 [릴리스](https://github.com/simmany/ai-project-template/releases)에 있습니다.
+- 지금 버전은 v1.8입니다. 바뀐 내용은 [릴리스](https://github.com/simmany/ai-project-template/releases)에 있습니다.
 - 예전 폴더 구성으로 만든 샘플 프로젝트는 [v1.6 시점의 저장소](https://github.com/simmany/ai-project-template/tree/v1.6/samples)에서 볼 수 있습니다.
 - MIT 라이선스입니다. 전문은 [LICENSE](LICENSE)에 있습니다. 저작권자: Su-Ho Yoo

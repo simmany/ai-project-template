@@ -15,7 +15,7 @@
 - REQ-TEMPLATE.md, README-TEMPLATE.md : 복사해서 쓰는 양식(샘플). 실제 요청이나 자료로 다루지 않는다.
 
 ## 작업 순서
-1. 시작: rules/, _workspace/memory/status.md, 이번 REQ를 먼저 읽는다.
+1. 시작: rules/ 바로 아래의 파일, _workspace/memory/status.md, 이번 REQ를 먼저 읽는다. rules/의 하위 폴더는 규칙이 가리킬 때만 읽는다.
    - status.md가 없으면 이번 요청을 바탕으로 처음 작성한다.
    - 프롬프트로 작업을 요청받으면 수행하기 전에 REQ 파일에 먼저 기록한다.
 2. 수행: input/에서 필요한 자료만 골라 읽는다. 중간 산출물은 _workspace/drafts/의 해당 REQ 폴더에 둔다.

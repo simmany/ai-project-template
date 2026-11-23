@@ -56,12 +56,12 @@ AGENTS.md를 먼저 읽고, (맡길 일)을 진행해줘.
 └── LICENSE
 ```
 
-`rules/`에는 코딩 기본 기준 두 파일(`coding.md`, `coding-skeleton.md`)이 미리 들어 있습니다. 코드를 만들어 달라고 하면 에이전트가 이 기준을 따르고, 계속 쓰는 코드는 `codebase/` 폴더를 만들어 그 안에 둡니다(6단계).
+`rules/`에는 코딩 기본 기준(`coding.md`)과 그 예제(`coding/` 폴더)가 미리 들어 있습니다. 코드를 만들어 달라고 하면 에이전트가 이 기준을 따르고, 계속 쓰는 코드는 `codebase/` 폴더를 만들어 그 안에 둡니다(6단계).
 
 `help/`, `README.md`, `LICENSE`는 템플릿의 안내와 라이선스입니다. 익숙해지면 지워도 됩니다. 이 폴더를 다른 사람에게 다시 나눠 줄 때는 `LICENSE`를 남겨 둡니다.
 
 ## 버전과 라이선스
 
-- 지금 버전은 v1.9입니다. 바뀐 내용은 [릴리스](https://github.com/simmany/ai-project-template/releases)에 있습니다.
+- 지금 버전은 v1.10입니다. 바뀐 내용은 [릴리스](https://github.com/simmany/ai-project-template/releases)에 있습니다.
 - 예전 폴더 구성으로 만든 샘플 프로젝트는 [v1.6 시점의 저장소](https://github.com/simmany/ai-project-template/tree/v1.6/samples)에서 볼 수 있습니다.
 - MIT 라이선스입니다. 전문은 [LICENSE](LICENSE)에 있습니다. 저작권자: Su-Ho Yoo
